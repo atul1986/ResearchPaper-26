@@ -8,7 +8,7 @@
 <title>Faculty Console · TE Research Papers · ADYPU</title>
 <link rel="icon" href="https://adypu.edu.in/wp-content/uploads/2023/03/cropped-favicon-1-270x270.png">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
-<script src="assets/config.js?v=20261117b"></script>
+<script src="assets/config.js?v=rp3"></script>
 <style>
 :root{--bg:#f7f2e8;--paper:#fffdf8;--ink:#1f1a14;--ink2:#4a4237;--muted:#857a6a;--line:#e2d8c6;--line2:#cfc2ab;--brand:#7b1e2b;--brand2:#9c2a3a;--teal:#0f6b67;--gold:#c4952c;--coral:#b3261e;--ok:#2f7d4f;--warn:#a86b00;--err:#b3261e;--mono:'IBM Plex Mono',ui-monospace,monospace;--head:'Fraunces',Georgia,serif;--sans:'IBM Plex Sans',system-ui,sans-serif;--shadow:0 1px 0 var(--line)}
 [data-theme=dark]{--bg:#16130f;--paper:#1f1b16;--ink:#f3ece0;--ink2:#d4c9b6;--muted:#9b8f7d;--line:#352e25;--line2:#4a4136;--brand:#d9606f;--brand2:#e57b88;--teal:#4fb5ae;--gold:#e0b85a}
@@ -229,7 +229,7 @@ const Demo = (() => {
   const S = ['Submitted','Submitted','Submitted','Under Review','Approved','Needs Revision'];
   const pick = a => a[Math.random() * a.length | 0], seq = {}, rows = [];
   for (let i = 0; i < 38; i++) {
-    const div = pick('ABCDEFGHIKL'.split('')); seq[div] = (seq[div] || 0) + 1;
+    const div = pick('ABCDE'.split('')); seq[div] = (seq[div] || 0) + 1;
     const n = 1 + (Math.random() * 4 | 0), st = pick(S), d = new Date(Date.now() - Math.random() * 12 * 864e5);
     rows.push({ id: 'RP-' + div + '-' + String(seq[div]).padStart(3, '0'), submittedOn: d.toLocaleString('en-IN'), program: pick(P), division: div, title: pick(T), domain: pick(D),
       objective: 'To design and evaluate a model that improves accuracy over existing approaches on a public dataset, and to analyse its practical applicability.', plag: String(3 + (Math.random() * 18 | 0)),
@@ -293,7 +293,7 @@ setInterval(() => {
 
 /* ---------------- app ---------------- */
 let SETTINGS = {}, QUOTA = null, ROWS = [], VIEW = 'overview', F = { q: '', div: '', prog: '', status: '' }, SK = 'id', SD = 1;
-const DIVS = 'ABCDEFGHIJKLM'.split(''), STATUSES = ['Submitted', 'Under Review', 'Approved', 'Needs Revision'];
+const DIVS = C.DIVISIONS || 'ABCDE'.split(''), STATUSES = ['Submitted', 'Under Review', 'Approved', 'Needs Revision'];
 async function start(){
   $('#login').hidden = true; $('#app').hidden = false; $('#main').innerHTML = '<div class="loading">Loading submissions…</div>';
   try {

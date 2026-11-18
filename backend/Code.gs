@@ -24,7 +24,7 @@ const CONFIG = {
   DEADLINE: '2026-11-25T23:59:00+05:30',   // '' = no deadline
   ACCEPT_LATE: true,                        // false = close submissions after the deadline
   MAX_FILE_MB: 10,
-  DIVISIONS: 'ABCDEFGHIJKLM'.split(''),
+  DIVISIONS: 'ABCDE'.split(''),
   PROGRAMS: [
     'B.Tech Computer Engineering',
     'B.Tech Computer Science & Engineering',

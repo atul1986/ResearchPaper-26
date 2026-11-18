@@ -5,7 +5,10 @@
    While API_URL is empty, the site runs in PREVIEW mode (nothing is saved).
    ========================================================================= */
 window.DSL_CONFIG = {
-  API_URL: '',
+  API_URL: 'https://script.google.com/macros/s/AKfycbyjfqQDfWNrdR4wP7nyqfTiRCAn4dHiGl4wByF-ngyBhvPy7OiPc_uicbXsPsC_j_vo/exec',
+
+  // Divisions shown in the portal (TE research papers: A to E only)
+  DIVISIONS: ['A', 'B', 'C', 'D', 'E'],
 
   // University logo: a local copy (assets/logo.png) is used first if you add one,
   // otherwise the official logo from adypu.edu.in is shown.

@@ -17,7 +17,7 @@ Faculty browser ──► GitHub Pages (admin.html) ──►   (Code.gs)     �
 ---
 
 ## What students fill in
-- **Program** and **Division A–M** (drop-downs)
+- **Program** and **Division A–E** (drop-downs)
 - **Paper title** and **Objective** (both required), research area and similarity % (optional)
 - **Up to 4 student authors**: Student 1 (first author) name, URN, contact, email **required**; Students 2–4 **optional**
 - **Uploads (both compulsory)**: Research paper (PDF / DOC / DOCX) and Plagiarism report (PDF / Word / image), max 10 MB each

@@ -8,7 +8,7 @@
 <link rel="icon" href="https://adypu.edu.in/wp-content/uploads/2023/03/cropped-favicon-1-270x270.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400;1,9..144,600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
-<script src="assets/config.js?v=rp2"></script>
+<script src="assets/config.js?v=rp3"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js" defer></script>
 <style>
 :root{
@@ -336,7 +336,7 @@ footer{margin-top:50px;border-top:3px double var(--rule2);background:var(--sheet
             <select id="program" class="big-sel"><option value="">Select your program</option></select>
             <div class="m">Please select your program.</div></div>
           <div class="f" id="f-division"><label>Division <span class="r">*</span></label>
-            <select id="division" class="big-sel"><option value="">Select division (A–M)</option></select>
+            <select id="division" class="big-sel"><option value="">Select division (A–E)</option></select>
             <div class="m">Please select your division.</div></div>
         </div>
       </div>
@@ -441,7 +441,7 @@ $('#yr').textContent = new Date().getFullYear();
 /* ---------------- API ---------------- */
 let CFG = {
   ACADEMIC_YEAR:'2026-27', CLASS_NAME:'Third Year (TE) B.Tech', DEADLINE:'2026-11-25T23:59:00+05:30', MAX_PLAG_PERCENT:15, ACCEPT_LATE:true, MAX_FILE_MB:10,
-  DIVISIONS:'ABCDEFGHIJKLM'.split(''),
+  DIVISIONS:(window.DSL_CONFIG && window.DSL_CONFIG.DIVISIONS) || 'ABCDE'.split(''),
   PROGRAMS:['B.Tech Computer Engineering','B.Tech Computer Science & Engineering','B.Tech CSE (Artificial Intelligence & Machine Learning)','B.Tech CSE (Data Science)','B.Tech CSE (Cyber Security)','B.Tech Artificial Intelligence & Data Science','B.Tech Information Technology','B.Tech Electronics & Telecommunication Engineering','B.Tech Robotics & Automation','B.Tech Mechanical Engineering','B.Tech Civil Engineering'],
   DOMAINS:['Artificial Intelligence & Machine Learning','Deep Learning','Data Science & Analytics','Natural Language Processing','Computer Vision','Internet of Things','Cyber Security','Blockchain','Cloud & Edge Computing','Computer Networks','Software Engineering','Embedded Systems & Robotics','Healthcare Informatics','Other']
 };
@@ -478,7 +478,7 @@ function drawRace(s){
 }
 async function loadInit(){
   try {
-    const d = await api('init'); if (d.config) CFG = Object.assign(CFG, d.config); fillSelects(); drawRace(d.stats); startCountdown();
+    const d = await api('init'); if (d.config) CFG = Object.assign(CFG, d.config); if (C.DIVISIONS) CFG.DIVISIONS = C.DIVISIONS; fillSelects(); drawRace(d.stats); startCountdown();
   } catch (e) { fillSelects(); startCountdown(); $('#raceLead').textContent = 'Live stats unavailable right now.'; }
 }
 setInterval(() => api('init').then(d => drawRace(d.stats)).catch(() => {}), 60000);
