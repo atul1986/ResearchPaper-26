@@ -7,6 +7,10 @@
  * Faculty: username + password (salted & hashed), role-based access, division scoping,
  *          masked contact numbers, private Drive files, full audit log, login lockout.
  *
+ * STORAGE IS FULLY SEPARATE from the DSL Lab portal: own Google Sheet, own Drive folder,
+ * and every saved setting/counter/session uses an "RP_" prefix, so the two can never mix,
+ * even if both scripts were accidentally placed in the same Apps Script project.
+ *
  * Nothing secret is stored in this file, so it is safe to keep in a public GitHub repo.
  * See README.md for the 5-minute deployment steps.
  */
@@ -70,8 +74,8 @@ const COL = {}; HEADERS.forEach((h, i) => COL[h] = i);
 /** Run once from the Apps Script editor. Prints your admin username + a one-time random password. */
 function setup() {
   const p = PropertiesService.getScriptProperties();
-  let ss = p.getProperty('SHEET_ID') ? SpreadsheetApp.openById(p.getProperty('SHEET_ID')) : null;
-  if (!ss) { ss = SpreadsheetApp.create('TE Research Paper Submissions – AY ' + CONFIG.ACADEMIC_YEAR); p.setProperty('SHEET_ID', ss.getId()); }
+  let ss = p.getProperty('RP_SHEET_ID') ? SpreadsheetApp.openById(p.getProperty('RP_SHEET_ID')) : null;
+  if (!ss) { ss = SpreadsheetApp.create('TE Research Paper Submissions – AY ' + CONFIG.ACADEMIC_YEAR); p.setProperty('RP_SHEET_ID', ss.getId()); }
   const mk = (name, headers) => {
     let sh = ss.getSheetByName(name);
     if (!sh) {
@@ -88,19 +92,20 @@ function setup() {
   mk(SH_SUB, HEADERS); const fac = mk(SH_FAC, FAC_HEADERS); mk(SH_LOG, LOG_HEADERS);
   ss.getSheets().forEach(s => { if (s.getName().indexOf('Sheet') === 0 && s.getLastRow() === 0 && ss.getSheets().length > 3) ss.deleteSheet(s); });
 
-  if (!p.getProperty('FOLDER_ID')) p.setProperty('FOLDER_ID', DriveApp.createFolder('TE Research Paper Submissions – AY ' + CONFIG.ACADEMIC_YEAR).getId());
+  if (!p.getProperty('RP_FOLDER_ID')) p.setProperty('RP_FOLDER_ID', DriveApp.createFolder('TE Research Paper Submissions – AY ' + CONFIG.ACADEMIC_YEAR).getId());
 
   if (fac.getLastRow() < 2) {
     const pw = randomPassword_();
     const salt = Utilities.getUuid();
-    fac.appendRow(['admin', 'Lab Coordinator', 'admin', 'ALL', salt, hash_(pw, salt), 'YES', now_(), '']);
+    fac.appendRow(['admin', 'Research Coordinator', 'admin', 'ALL', salt, hash_(pw, salt), 'YES', now_(), '']);
     Logger.log('================  SAVE THIS  ================');
     Logger.log('Admin username : admin');
     Logger.log('Admin password : ' + pw + '   (change it after first login)');
     Logger.log('=============================================');
   }
+  Logger.log('Portal       : TE RESEARCH PAPERS (separate from DSL Lab)');
   Logger.log('Google Sheet : ' + ss.getUrl());
-  Logger.log('Drive folder : ' + DriveApp.getFolderById(p.getProperty('FOLDER_ID')).getUrl());
+  Logger.log('Drive folder : ' + DriveApp.getFolderById(p.getProperty('RP_FOLDER_ID')).getUrl());
 }
 
 /** Emergency: run from the editor to reset the "admin" password if it is forgotten. */
@@ -114,16 +119,19 @@ function resetAdminPassword() {
   }
 }
 
+const PORTAL_ID = 'TE-RESEARCH-PAPERS';
+
 function db_() {
   const p = PropertiesService.getScriptProperties();
-  if (!p.getProperty('SHEET_ID') || !p.getProperty('FOLDER_ID')) setup();
-  const ss = SpreadsheetApp.openById(p.getProperty('SHEET_ID'));
+  if (!p.getProperty('RP_SHEET_ID') || !p.getProperty('RP_FOLDER_ID')) setup();
+  const ss = SpreadsheetApp.openById(p.getProperty('RP_SHEET_ID'));
   const sub = ss.getSheetByName(SH_SUB);
+  if (!sub || sub.getRange(1, 5).getValue() !== 'Paper Title') throw new Error('Storage check failed: the linked sheet is not the TE Research Paper sheet.');
   if (sub.getLastColumn() < HEADERS.length) {             // upgrade older sheets with new columns
     sub.getRange(1, 1, 1, HEADERS.length).setValues([HEADERS]).setFontWeight('bold').setBackground('#111827').setFontColor('#fff');
     sub.getRange(1, 1, sub.getMaxRows(), HEADERS.length).setNumberFormat('@');
   }
-  return { p, ss, sub, folder: DriveApp.getFolderById(p.getProperty('FOLDER_ID')) };
+  return { p, ss, sub, folder: DriveApp.getFolderById(p.getProperty('RP_FOLDER_ID')) };
 }
 
 /* ================================================================ HTTP */
@@ -151,7 +159,7 @@ const ROUTES = {
   track: r => track_(r.id, r.urn),
   // ---- faculty (authenticated)
   login: r => login_(r.username, r.password),
-  logout: r => { CacheService.getScriptCache().remove('s_' + r.token); return true; },
+  logout: r => { CacheService.getScriptCache().remove('rp_s_' + r.token); return true; },
   dashboard: r => dashboard_(auth_(r)),
   review: r => review_(auth_(r), r.id, r.status, r.remarks),
   reveal: r => reveal_(auth_(r), r.id),
@@ -171,8 +179,8 @@ const ROUTES = {
 /* ================================================================ HELPERS */
 
 /* Deadline & late rule can be changed from the faculty dashboard (stored in Script Properties). */
-function deadline_() { const v = PropertiesService.getScriptProperties().getProperty('DEADLINE'); return v == null ? CONFIG.DEADLINE : v; }
-function acceptLate_() { const v = PropertiesService.getScriptProperties().getProperty('ACCEPT_LATE'); return v == null ? CONFIG.ACCEPT_LATE : v === 'true'; }
+function deadline_() { const v = PropertiesService.getScriptProperties().getProperty('RP_DEADLINE'); return v == null ? CONFIG.DEADLINE : v; }
+function acceptLate_() { const v = PropertiesService.getScriptProperties().getProperty('RP_ACCEPT_LATE'); return v == null ? CONFIG.ACCEPT_LATE : v === 'true'; }
 const now_ = () => Utilities.formatDate(new Date(), TZ, 'dd-MM-yyyy HH:mm:ss');
 const clean_ = (s, max) => String(s == null ? '' : s).replace(/[\u0000-\u001f]/g, ' ').trim().slice(0, max || 300);
 const safe_ = s => /^[=+\-@]/.test(String(s)) ? "'" + s : String(s);   // block spreadsheet formula injection
@@ -222,14 +230,14 @@ function rowObj_(r, full) {
 /* ================================================================ PUBLIC: stats */
 
 function stats_() {
-  const cache = CacheService.getScriptCache(), hit = cache.get('stats');
+  const cache = CacheService.getScriptCache(), hit = cache.get('rp_stats');
   if (hit) return JSON.parse(hit);
   const byDiv = {}; CONFIG.DIVISIONS.forEach(d => byDiv[d] = 0);
   let students = 0;
   const rs = rows_();
   rs.forEach(r => { byDiv[r[COL['Division']]] = (byDiv[r[COL['Division']]] || 0) + 1; students += Number(r[COL['Team Size']]) || 0; });
   const s = { total: rs.length, students, byDiv, updated: new Date().toISOString() };
-  cache.put('stats', JSON.stringify(s), 30);
+  cache.put('rp_stats', JSON.stringify(s), 30);
   return s;
 }
 
@@ -281,9 +289,9 @@ function fileCheck_(f, label, allowed) {
 
 function submit_(payload) {
   const cache = CacheService.getScriptCache();
-  const rate = Number(cache.get('rate') || 0);
+  const rate = Number(cache.get('rp_rate') || 0);
   if (rate > 60) throw new Error('Server is busy. Please try again in a minute.');
-  cache.put('rate', String(rate + 1), 60);
+  cache.put('rp_rate', String(rate + 1), 60);
 
   const d = validate_(payload);
   const dl = deadline_();
@@ -300,7 +308,7 @@ function submit_(payload) {
       }
     }
     const queue = rs.filter(r => r[COL['Division']] === d.division && (r[COL['Status']] === 'Submitted' || r[COL['Status']] === 'Under Review')).length + 1;
-    const seq = Number(s.p.getProperty('SEQ_' + d.division) || 0) + 1;
+    const seq = Number(s.p.getProperty('RP_SEQ_' + d.division) || 0) + 1;
     const id = 'RP-' + d.division + '-' + ('000' + seq).slice(-3);
     const it = s.folder.getFoldersByName('Division ' + d.division);
     const folder = it.hasNext() ? it.next() : s.folder.createFolder('Division ' + d.division);
@@ -318,8 +326,8 @@ function submit_(payload) {
     set('File Name', fname); set('File Link', file.getUrl()); set('File ID', file.getId());
     set('Plag Report Name', pname); set('Plag Report Link', pfile.getUrl()); set('Plag Report ID', pfile.getId()); set('Late', late ? 'YES' : 'NO'); set('Status', 'Submitted');
     s.sub.getRange(s.sub.getLastRow() + 1, 1, 1, HEADERS.length).setNumberFormat('@').setValues([row]);
-    s.p.setProperty('SEQ_' + d.division, String(seq));
-    CacheService.getScriptCache().remove('stats');
+    s.p.setProperty('RP_SEQ_' + d.division, String(seq));
+    CacheService.getScriptCache().remove('rp_stats');
     const rowNum = s.sub.getLastRow();
     lock.releaseLock();
     const mail = sendSubmissionEmail_({ id, late, queue, submittedOn: row[COL['Submitted On']], program: d.program, division: d.division, title: d.title, members: d.members, fileName: fname, plagFileName: pname, plag: d.plag, objective: d.objective, domain: d.domain });
@@ -348,7 +356,7 @@ function facRows_() { const sh = db_().ss.getSheetByName(SH_FAC); return { sh, v
 
 function login_(username, password) {
   username = clean_(username, 40).toLowerCase(); password = String(password || '');
-  const cache = CacheService.getScriptCache(), lk = 'f_' + username, fails = Number(cache.get(lk) || 0);
+  const cache = CacheService.getScriptCache(), lk = 'rp_f_' + username, fails = Number(cache.get(lk) || 0);
   if (fails >= CONFIG.MAX_LOGIN_FAILS) throw new Error('Account temporarily locked after repeated failed attempts. Try again in ' + CONFIG.LOCK_MINUTES + ' minutes.');
   Utilities.sleep(400);                                    // slow down guessing
   const { sh, v } = facRows_();
@@ -358,7 +366,7 @@ function login_(username, password) {
     cache.remove(lk);
     const token = Utilities.getUuid() + Utilities.getUuid().slice(0, 8);
     const sess = { u: v[i][0], name: v[i][1], role: v[i][2], divs: String(v[i][3] || 'ALL') };
-    cache.put('s_' + token, JSON.stringify(sess), CONFIG.SESSION_MINUTES * 60);
+    cache.put('rp_s_' + token, JSON.stringify(sess), CONFIG.SESSION_MINUTES * 60);
     sh.getRange(i + 1, 9).setValue(now_());
     log_(sess.u, 'LOGIN', 'success');
     return { token, user: sess, minutes: CONFIG.SESSION_MINUTES };
@@ -369,9 +377,9 @@ function login_(username, password) {
 }
 
 function auth_(r, adminOnly) {
-  const cache = CacheService.getScriptCache(), raw = r && r.token && cache.get('s_' + r.token);
+  const cache = CacheService.getScriptCache(), raw = r && r.token && cache.get('rp_s_' + r.token);
   if (!raw) throw new Error('SESSION_EXPIRED');
-  cache.put('s_' + r.token, raw, CONFIG.SESSION_MINUTES * 60);   // sliding expiry
+  cache.put('rp_s_' + r.token, raw, CONFIG.SESSION_MINUTES * 60);   // sliding expiry
   const s = JSON.parse(raw);
   if (adminOnly && s.role !== 'admin') throw new Error('Only the lab coordinator (admin) can do this.');
   return s;
@@ -577,9 +585,9 @@ function saveSettings_(s, deadline, acceptLate) {
   deadline = String(deadline || '').trim();
   if (deadline && isNaN(new Date(deadline).getTime())) throw new Error('Invalid deadline date.');
   const p = PropertiesService.getScriptProperties();
-  p.setProperty('DEADLINE', deadline);
-  p.setProperty('ACCEPT_LATE', acceptLate ? 'true' : 'false');
-  CacheService.getScriptCache().remove('stats');
+  p.setProperty('RP_DEADLINE', deadline);
+  p.setProperty('RP_ACCEPT_LATE', acceptLate ? 'true' : 'false');
+  CacheService.getScriptCache().remove('rp_stats');
   log_(s.u, 'SETTINGS', 'deadline=' + (deadline || 'none') + ' acceptLate=' + !!acceptLate);
   return { DEADLINE: deadline, ACCEPT_LATE: !!acceptLate };
 }
