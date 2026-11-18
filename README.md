@@ -22,7 +22,7 @@ Faculty browser ──► GitHub Pages (admin.html) ──►   (Code.gs)     �
 - **Up to 4 student authors**: Student 1 (first author) name, URN, contact, email **required**; Students 2–4 **optional**
 - **Uploads (both compulsory)**: Research paper (PDF / DOC / DOCX) and Plagiarism report (PDF / Word / image), max 10 MB each
 
-Extras: step-by-step wizard, live division race, deadline countdown, similarity warning above 15 %, draft auto-save, duplicate-URN protection, QR submission ticket with queue position, Track Status page, dark mode, confirmation and review emails.
+Design: academic-journal style ("Call for Papers", manuscript sections, acknowledgement letter, editorial desk). Extras: sectioned submission form, live submissions-by-division table, deadline countdown, similarity warning above 15 %, draft auto-save, duplicate-URN protection, QR submission ticket with queue position, Track Status page, dark mode, confirmation and review emails.
 
 ## Email notifications
 - Students give an email (team leader compulsory, others optional).
