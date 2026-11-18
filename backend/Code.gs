@@ -17,7 +17,7 @@ const CONFIG = {
   LAB_NAME: 'TE Research Paper Submission',
   CLASS_NAME: 'Third Year (TE) B.Tech',
   ACADEMIC_YEAR: '2026-27',
-  DEADLINE: '2026-12-15T23:59:00+05:30',   // '' = no deadline
+  DEADLINE: '2026-11-25T23:59:00+05:30',   // '' = no deadline
   ACCEPT_LATE: true,                        // false = close submissions after the deadline
   MAX_FILE_MB: 10,
   DIVISIONS: 'ABCDEFGHIJKLM'.split(''),
@@ -322,7 +322,7 @@ function submit_(payload) {
     CacheService.getScriptCache().remove('stats');
     const rowNum = s.sub.getLastRow();
     lock.releaseLock();
-    const mail = sendSubmissionEmail_({ id, late, queue, submittedOn: row[COL['Submitted On']], program: d.program, division: d.division, title: d.title, members: d.members, fileName: fname, plagFileName: pname, plag: d.plag, objective: d.objective });
+    const mail = sendSubmissionEmail_({ id, late, queue, submittedOn: row[COL['Submitted On']], program: d.program, division: d.division, title: d.title, members: d.members, fileName: fname, plagFileName: pname, plag: d.plag, objective: d.objective, domain: d.domain });
     s.sub.getRange(rowNum, COL['Email Log'] + 1).setValue(mail.log);
     return { id, late, queue, emailed: mail.sentTo, submittedOn: row[COL['Submitted On']], program: d.program, division: d.division, title: d.title,
              members: d.members.map(m => ({ name: m.name, urn: m.urn })), fileName: fname, plagFileName: pname };
@@ -492,14 +492,13 @@ function facultyDelete_(s, username) {
 function esc_(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 
 function mailShell_(title, accent, inner) {
-  return '<div style="background:#f4f4f0;padding:24px 12px;font-family:Segoe UI,Roboto,Arial,sans-serif;color:#0d0f1a">' +
-    '<div style="max-width:560px;margin:0 auto;background:#ffffff;border-radius:16px;overflow:hidden;border:1px solid #e6e4dc">' +
-    '<div style="padding:16px 22px;border-bottom:1px solid #eee"><img src="' + CONFIG.LOGO_URL + '" alt="ADYPU" height="40" style="display:block;height:40px"></div>' +
-    '<div style="background:#0d0f1a;color:#fff;padding:20px 22px"><div style="font-size:12px;opacity:.7;letter-spacing:.5px">' + esc_(CONFIG.SCHOOL) + ' · ' + esc_(CONFIG.LAB_NAME) + '</div>' +
-    '<div style="font-size:21px;font-weight:700;margin-top:4px">' + title + '</div>' +
-    '<div style="height:4px;width:56px;background:' + accent + ';border-radius:4px;margin-top:10px"></div></div>' +
-    '<div style="padding:20px 22px;font-size:14.5px;line-height:1.6">' + inner + '</div>' +
-    '<div style="padding:14px 22px;background:#fafaf7;border-top:1px solid #eee;font-size:12px;color:#6b7089">' + esc_(CONFIG.UNIVERSITY) + ' · AY ' + esc_(CONFIG.ACADEMIC_YEAR) +
+  return '<div style="background:#f7f2e8;padding:24px 12px;font-family:Georgia,\'Times New Roman\',serif;color:#1f1a14">' +
+    '<div style="max-width:600px;margin:0 auto;background:#fffdf8;border:1px solid #e2d8c6">' +
+    '<div style="padding:16px 24px;border-bottom:3px double #cfc2ab;text-align:center"><img src="' + CONFIG.LOGO_URL + '" alt="ADYPU" height="42" style="height:42px"></div>' +
+    '<div style="padding:20px 24px 6px;text-align:center"><div style="font-family:Consolas,monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:' + accent + '">' + esc_(CONFIG.SCHOOL) + ' · ' + esc_(CONFIG.LAB_NAME) + '</div>' +
+    '<div style="font-size:26px;font-weight:600;margin-top:6px">' + title + '</div></div>' +
+    '<div style="padding:14px 24px 20px;font-size:15px;line-height:1.6;font-family:Arial,Helvetica,sans-serif">' + inner + '</div>' +
+    '<div style="padding:14px 24px;border-top:1px solid #e2d8c6;font-size:12px;color:#857a6a;font-family:Arial,Helvetica,sans-serif">Research Cell · ' + esc_(CONFIG.SCHOOL) + ', ' + esc_(CONFIG.UNIVERSITY) + ' · AY ' + esc_(CONFIG.ACADEMIC_YEAR) +
     '<br>This is an automated message. For queries, reply to this email.</div></div></div>';
 }
 function kvTable_(rows) {
@@ -522,25 +521,30 @@ function send_(to, subject, html, plain) {
 }
 
 function sendSubmissionEmail_(r) {
-  const team = r.members.map((m, i) => esc_(m.name) + ' <span style="color:#6b7089">(' + esc_(m.urn) + ')</span>' + (i ? '' : ' · leader')).join('<br>');
+  const td = 'padding:7px 8px;border-bottom:1px solid #e2d8c6;font-size:13px;vertical-align:top';
+  const th = 'padding:7px 8px;border-bottom:1px solid #1f1a14;font-size:11px;text-align:left;color:#857a6a;text-transform:uppercase;letter-spacing:.8px';
+  const authors = '<table style="width:100%;border-collapse:collapse;margin:8px 0 14px"><tr><th style="' + th + '">#</th><th style="' + th + '">Name</th><th style="' + th + '">URN</th><th style="' + th + '">Contact</th><th style="' + th + '">Email</th></tr>' +
+    r.members.map((m, i) => '<tr><td style="' + td + '">' + (i + 1) + '</td><td style="' + td + '"><b>' + esc_(m.name) + '</b>' + (i ? '' : '<br><span style="color:#7b1e2b;font-size:11px">first author</span>') + '</td><td style="' + td + ';font-family:Consolas,monospace">' + esc_(m.urn) + '</td><td style="' + td + '">' + esc_(m.contact || '-') + '</td><td style="' + td + '">' + esc_(m.email || '-') + '</td></tr>').join('') + '</table>';
   const inner =
-    '<p>Dear ' + esc_(r.members[0].name.split(' ')[0]) + ' and team,</p>' +
-    '<p>Your research paper has been <b>successfully submitted</b>. Please keep this email for your records.</p>' +
-    '<div style="background:#f1efff;border-radius:12px;padding:14px 16px;margin:14px 0"><div style="font-size:12px;color:#3d2fd6">SUBMISSION ID</div>' +
-    '<div style="font-family:Consolas,monospace;font-size:26px;font-weight:700;color:#3d2fd6;letter-spacing:1px">' + esc_(r.id) + '</div>' +
-    '<div style="font-size:13px;margin-top:4px">#' + r.queue + ' in the Division ' + esc_(r.division) + ' review queue' + (r.late ? ' · <b style="color:#b2371c">submitted after deadline</b>' : '') + '</div></div>' +
-    kvTable_([['Submitted on', esc_(r.submittedOn)], ['Program', esc_(r.program)], ['Division', esc_(r.division)], ['Paper title', esc_(r.title)],
-              ['Objective', esc_(r.objective)], ['Authors', team], ['Plagiarism', r.plag !== '' ? esc_(r.plag) + '%' : 'see report'],
-              ['Paper file', esc_(r.fileName)], ['Plag report', esc_(r.plagFileName)]]) +
-    '<p><a href="' + CONFIG.SITE_URL + '#track" style="display:inline-block;background:#3d2fd6;color:#fff;text-decoration:none;padding:11px 18px;border-radius:10px;font-weight:700">Track review status →</a></p>' +
-    '<p style="font-size:13px;color:#6b7089">To track, use your Submission ID and the URN of any team member. You will also get an email when your faculty reviews the paper.</p>';
-  const plain = 'Your TE research paper has been submitted.\nSubmission ID: ' + r.id + '\nTitle: ' + r.title + '\nDivision: ' + r.division +
+    '<p>Dear ' + esc_(r.members[0].name.split(' ')[0]) + (r.members.length > 1 ? ' and co-authors' : '') + ',</p>' +
+    '<p>We acknowledge receipt of your research paper. The details recorded are below. Please check them and keep this email for your records.</p>' +
+    '<div style="border:1px solid #e2d8c6;border-left:4px solid #7b1e2b;padding:12px 16px;margin:14px 0;background:#fbf7ef"><div style="font-size:11px;color:#857a6a;letter-spacing:1.4px;text-transform:uppercase">Manuscript ID</div>' +
+    '<div style="font-family:Consolas,monospace;font-size:26px;font-weight:700;color:#7b1e2b;letter-spacing:1px">' + esc_(r.id) + '</div>' +
+    '<div style="font-size:13px;margin-top:2px">Position #' + r.queue + ' in the Division ' + esc_(r.division) + ' review queue' + (r.late ? ' · <b style="color:#b3261e">submitted after deadline</b>' : '') + '</div></div>' +
+    kvTable_([['Submitted on', esc_(r.submittedOn)], ['Program', esc_(r.program)], ['Division', esc_(r.division)], ['Paper title', '<span style="font-family:Georgia,serif;font-size:15px">' + esc_(r.title) + '</span>'],
+              ['Objective', esc_(r.objective)], ['Research area', esc_(r.domain || '-')], ['Similarity', r.plag !== '' ? esc_(r.plag) + '%' : 'as per attached report'],
+              ['Manuscript', esc_(r.fileName)], ['Plag report', esc_(r.plagFileName)]]) +
+    '<div style="font-size:11px;color:#857a6a;letter-spacing:1.4px;text-transform:uppercase;margin-top:6px">Authors</div>' + authors +
+    '<p style="font-size:13px;color:#4a4237">If any detail is wrong, reply to this email before the deadline.</p>' +
+    '<p><a href="' + CONFIG.SITE_URL + '#track" style="display:inline-block;background:#7b1e2b;color:#fff;text-decoration:none;padding:11px 18px;font-weight:700">Track review status →</a></p>' +
+    '<p style="font-size:13px;color:#857a6a">To track, use your Manuscript ID and the URN of any author. You will also get an email when your paper is reviewed.</p>';
+  const plain = 'Your TE research paper has been received.\nManuscript ID: ' + r.id + '\nTitle: ' + r.title + '\nObjective: ' + r.objective + '\nProgram: ' + r.program + ' | Division: ' + r.division +
     '\nAuthors: ' + r.members.map(m => m.name + ' (' + m.urn + ')').join(', ') + '\nTrack status: ' + CONFIG.SITE_URL + '#track';
-  return send_(recipients_(r.members), r.id + ' · Research paper submitted ✅', mailShell_('Research paper submitted ✅', '#c8f560', inner), plain);
+  return send_(recipients_(r.members), r.id + ' · Research paper received ✅', mailShell_('Acknowledgement of Receipt', '#7b1e2b', inner), plain);
 }
 
 function sendReviewEmail_(o, status, remarks, by) {
-  const col = { 'Approved': '#0fa36b', 'Needs Revision': '#ff6a4d', 'Under Review': '#c97a00', 'Submitted': '#3d2fd6' }[status] || '#3d2fd6';
+  const col = { 'Approved': '#2f7d4f', 'Needs Revision': '#b3261e', 'Under Review': '#a86b00', 'Submitted': '#7b1e2b' }[status] || '#7b1e2b';
   const msg = {
     'Approved': 'Congratulations! Your research paper has been <b>approved</b> by your faculty.',
     'Needs Revision': 'Your faculty has reviewed your paper and <b>requested some changes</b>. Please go through the remarks below and revise the paper.',
@@ -551,13 +555,13 @@ function sendReviewEmail_(o, status, remarks, by) {
     '<div style="display:inline-block;background:' + col + ';color:#fff;font-weight:700;padding:7px 14px;border-radius:999px;margin:6px 0">' + esc_(status) + '</div>' +
     kvTable_([['Submission ID', '<span style="font-family:Consolas,monospace">' + esc_(o.id) + '</span>'], ['Paper title', esc_(o.title)], ['Division', esc_(o.division)], ['Reviewed by', esc_(by)]]) +
     (remarks ? '<div style="border-left:4px solid ' + col + ';background:#fafaf7;padding:12px 14px;border-radius:8px;margin:10px 0"><div style="font-size:12px;color:#6b7089;margin-bottom:4px">FACULTY REMARKS</div>' + esc_(remarks) + '</div>' : '') +
-    '<p><a href="' + CONFIG.SITE_URL + '#track" style="display:inline-block;background:#0d0f1a;color:#fff;text-decoration:none;padding:11px 18px;border-radius:10px;font-weight:700">View on portal →</a></p>';
+    '<p><a href="' + CONFIG.SITE_URL + '#track" style="display:inline-block;background:#1f1a14;color:#fff;text-decoration:none;padding:11px 18px;font-weight:700">View on portal →</a></p>';
   const plain = 'TE research paper ' + o.id + ' status: ' + status + (remarks ? '\nRemarks: ' + remarks : '') + '\nTrack: ' + CONFIG.SITE_URL + '#track';
   return send_(recipients_(o.members), o.id + ' · Paper status: ' + status, mailShell_('Review update: ' + esc_(status), col, inner), plain);
 }
 
 function testEmail_(s) {
-  const r = send_([CONFIG.REPLY_TO], 'TE Research Paper portal · test email', mailShell_('Email is working ✅', '#c8f560',
+  const r = send_([CONFIG.REPLY_TO], 'TE Research Paper portal · test email', mailShell_('Email is working ✅', '#0f6b67',
     '<p>This test was sent from the TE Research Paper Submission Portal by <b>@' + esc_(s.u) + '</b>.</p><p>Student confirmation and review emails will look like this.</p>'), 'TE Research Paper portal test email');
   log_(s.u, 'TEST_EMAIL', r.log);
   if (!r.sentTo) throw new Error(r.log);
