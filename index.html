@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TE Research Paper Submission · ADYPU School of Engineering</title>
+<meta name="description" content="Research paper submission portal for Third Year (TE) B.Tech students, School of Engineering, Ajeenkya D Y Patil University.">
+<link rel="icon" href="https://adypu.edu.in/wp-content/uploads/2023/03/cropped-favicon-1-270x270.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<script src="assets/config.js?v=20261117b"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js" defer></script>
+<style>
+:root{
+  --bg:#f6f5f1; --paper:#ffffff; --ink:#0d0f1a; --ink2:#3b4058; --muted:#6b7089; --line:#e6e4dc;
+  --brand:#3d2fd6; --brand2:#5b4dff; --lime:#c8f560; --coral:#ff6a4d; --ok:#0fa36b; --err:#dc3545;
+  --mono:'JetBrains Mono',ui-monospace,monospace; --head:'Space Grotesk',system-ui,sans-serif; --sans:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  --shadow:0 1px 0 var(--line),0 18px 40px -18px #0d0f1a26;
+}
+[data-theme=dark]{--bg:#0b0d16;--paper:#141726;--ink:#eef0fa;--ink2:#c3c7dc;--muted:#8a90ad;--line:#262a40;--shadow:0 1px 0 var(--line),0 18px 40px -18px #00000080}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:inherit}
+.preview{background:var(--lime);color:#1d2600;text-align:center;font-size:12.5px;font-weight:700;padding:7px 12px}
+
+/* ---------- top bar ---------- */
+.top{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top-in{max-width:1180px;margin:0 auto;padding:10px 18px;display:flex;align-items:center;gap:14px}
+.logo-box{background:#fff;border-radius:12px;padding:6px 10px;display:flex;align-items:center;box-shadow:0 1px 0 var(--line);min-height:48px}
+.logo-box img{height:38px;display:block}
+.logo-mono{font-family:var(--head);font-weight:700;color:var(--brand);font-size:18px;padding:0 4px}
+.sep{width:1px;height:34px;background:var(--line)}
+.tt b{display:block;font-family:var(--head);font-size:15px}
+.tt span{font-size:12px;color:var(--muted)}
+.grow{flex:1}
+.ib{border:1px solid var(--line);background:var(--paper);border-radius:11px;height:40px;padding:0 13px;cursor:pointer;font-weight:600;font-size:13.5px;display:inline-flex;align-items:center;gap:7px;text-decoration:none}
+.ib:hover{border-color:var(--ink2)}
+@media(max-width:640px){.tt,.sep,.hide-sm{display:none}}
+
+/* ---------- hero ---------- */
+.hero{max-width:1180px;margin:0 auto;padding:44px 18px 26px;display:grid;grid-template-columns:1.25fr 1fr;gap:28px;align-items:center}
+@media(max-width:920px){.hero{grid-template-columns:1fr;padding-top:28px}}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;font-weight:700;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:6px 12px;color:var(--ink2)}
+.eyebrow i{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 0 #0fa36b88;animation:ping 1.8s infinite}
+@keyframes ping{70%{box-shadow:0 0 0 8px #0fa36b00}}
+h1{font-family:var(--head);font-size:clamp(34px,5.4vw,60px);line-height:1.02;letter-spacing:-1.5px;margin:18px 0 14px}
+h1 .hl{background:var(--lime);color:#11160a;padding:0 10px;border-radius:12px;display:inline-block;transform:rotate(-1.5deg)}
+h1 code{font-family:var(--mono);font-size:.62em;color:var(--brand);letter-spacing:-1px;font-weight:700}
+[data-theme=dark] h1 code{color:#a99cff}
+.lead{color:var(--ink2);font-size:16.5px;line-height:1.6;max-width:560px;margin:0}
+.count{display:flex;gap:10px;margin:24px 0 22px;flex-wrap:wrap}
+.cbox{background:var(--ink);color:var(--bg);border-radius:14px;padding:10px 14px;min-width:72px;text-align:center}
+.cbox b{display:block;font-family:var(--mono);font-size:26px;line-height:1.1}
+.cbox span{font-size:10.5px;letter-spacing:1px;text-transform:uppercase;opacity:.7}
+.cnote{align-self:center;font-size:13px;color:var(--muted);max-width:160px;line-height:1.35}
+.cta{display:flex;gap:10px;flex-wrap:wrap}
+.btn{border:0;border-radius:14px;padding:14px 20px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:9px;text-decoration:none;font-size:15px;transition:.15s}
+.btn.pri{background:var(--brand);color:#fff;box-shadow:0 12px 24px -10px var(--brand)}
+.btn.pri:hover{transform:translateY(-2px)}
+.btn.sec{background:var(--paper);border:1px solid var(--line)}
+.btn:disabled{opacity:.55;cursor:not-allowed;transform:none!important}
+
+/* division race */
+.race{background:var(--paper);border-radius:22px;padding:20px;box-shadow:var(--shadow);border:1px solid var(--line)}
+.race-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.race-h h3{font-family:var(--head);margin:0;font-size:18px}
+.race-h span{font-size:11.5px;color:var(--muted);font-family:var(--mono)}
+.race-k{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 16px}
+.race-k div{background:var(--bg);border-radius:14px;padding:12px}
+.race-k b{font-family:var(--head);font-size:28px;display:block;line-height:1}
+.race-k small{color:var(--muted);font-size:12px}
+.bars{display:grid;grid-template-columns:repeat(13,1fr);gap:5px;align-items:end;height:130px}
+.bar{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:5px}
+.bar i{width:100%;border-radius:6px 6px 3px 3px;background:var(--brand);min-height:3px;transition:height .8s cubic-bezier(.2,.8,.2,1)}
+.bar.top i{background:var(--coral)}
+.bar em{font-style:normal;font-family:var(--mono);font-size:10px;color:var(--muted)}
+.bar b{font-family:var(--mono);font-size:11.5px}
+.race-f{font-size:12px;color:var(--muted);margin-top:12px;display:flex;align-items:center;gap:6px}
+
+/* ---------- wizard ---------- */
+.wrap{max-width:1180px;margin:0 auto;padding:10px 18px 40px}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);overflow:hidden}
+.track{display:flex;align-items:center;gap:0;padding:18px 20px;border-bottom:1px solid var(--line);overflow-x:auto;background:linear-gradient(180deg,color-mix(in srgb,var(--brand) 5%,transparent),transparent)}
+.tlabel{font-family:var(--mono);font-size:11px;color:var(--muted);margin-right:10px;white-space:nowrap}
+.node{display:flex;align-items:stretch;border:1.5px solid var(--line);border-radius:12px;background:var(--paper);cursor:pointer;flex:none;transition:.2s;overflow:hidden}
+.node .d{padding:8px 12px}
+.node .d small{display:block;font-family:var(--mono);font-size:10px;color:var(--muted)}
+.node .d b{font-size:13.5px;white-space:nowrap}
+.node .p{width:16px;border-left:1.5px solid var(--line);display:grid;place-items:center;background:var(--bg)}
+.node .p::after{content:"";width:5px;height:5px;border-radius:50%;background:var(--muted)}
+.node.on{border-color:var(--brand);box-shadow:0 0 0 4px color-mix(in srgb,var(--brand) 15%,transparent)}
+.node.on .d small{color:var(--brand)}
+.node.done{background:var(--lime);border-color:#a6d63f;color:#11160a}
+.node.done .d small{color:#46561c}
+.node.done .p{background:#b5e650;border-color:#a6d63f}
+.node.done .p::after{background:#11160a}
+.link{width:28px;height:2px;background:var(--line);position:relative;flex:none}
+.link::after{content:"";position:absolute;right:-1px;top:-4px;border:5px solid transparent;border-left:7px solid var(--line);border-right:0}
+.link.done{background:#a6d63f}.link.done::after{border-left-color:#a6d63f}
+.nul{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--coral);flex:none}
+
+.body{display:grid;grid-template-columns:1fr 320px}
+@media(max-width:920px){.body{grid-template-columns:1fr}.aside{border-left:0!important;border-top:1px solid var(--line)}}
+.pane{padding:26px 26px 22px;display:none;animation:in .3s ease}
+.pane.on{display:block}
+@keyframes in{from{opacity:0;transform:translateX(12px)}}
+.pane h2{font-family:var(--head);margin:0 0 4px;font-size:24px;letter-spacing:-.4px}
+.pane .ph{color:var(--muted);margin:0 0 22px;font-size:14px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:640px){.grid2{grid-template-columns:1fr}}
+.f{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.f label{font-size:13px;font-weight:600;color:var(--ink2)}
+.f label .r{color:var(--coral)}
+.f label .o{color:var(--muted);font-weight:500}
+.f input,.f select,.f textarea{border:1.5px solid var(--line);background:var(--bg);border-radius:12px;padding:12px 13px;outline:none;width:100%;transition:.15s}
+.f select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b7089' stroke-width='2' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+.f textarea{min-height:90px;resize:vertical}
+.f input:focus,.f select:focus,.f textarea:focus{border-color:var(--brand);background:var(--paper);box-shadow:0 0 0 4px color-mix(in srgb,var(--brand) 14%,transparent)}
+.f.bad input,.f.bad select,.f.bad textarea{border-color:var(--err)}
+.f .m{display:none;font-size:12px;color:var(--err)}
+.f.bad .m{display:block}
+.cnt{font-family:var(--mono);font-size:11px;color:var(--muted);text-align:right}
+.big-sel{font-size:17px!important;font-weight:600;padding:15px!important}
+
+/* team array */
+.arr-h{font-family:var(--mono);font-size:12.5px;color:var(--muted);margin-bottom:12px}
+.arr-h b{color:var(--brand)}
+.slot{border:1.5px solid var(--line);border-radius:16px;margin-bottom:12px;overflow:hidden;transition:.2s}
+.slot-h{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;background:var(--bg)}
+.idx{font-family:var(--mono);font-weight:700;font-size:12.5px;background:var(--ink);color:var(--bg);border-radius:8px;padding:4px 8px}
+.slot.leader .idx{background:var(--coral);color:#fff}
+.slot-h .nm{flex:1;font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.slot-h .nm.null{font-family:var(--mono);color:var(--muted);font-weight:500}
+.tag{font-size:11px;font-weight:700;border-radius:999px;padding:3px 9px;background:var(--paper);border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.slot.leader .tag{background:var(--coral);color:#fff;border-color:var(--coral)}
+.slot-b{padding:14px 14px 2px;display:none}
+.slot.open .slot-b{display:block}
+.slot.filled .slot-h .nm{color:var(--ink)}
+.g3{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+@media(max-width:640px){.g3{grid-template-columns:1fr}}
+.clr{border:0;background:none;color:var(--muted);font-size:12.5px;cursor:pointer;font-weight:600;padding:0 0 12px}
+.clr:hover{color:var(--err)}
+
+/* upload */
+.upgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:640px){.upgrid{grid-template-columns:1fr}}
+.uplabel{font-size:13px;font-weight:700;color:var(--ink2);margin-bottom:8px;display:flex;gap:6px;align-items:center}
+.drop{border:2px dashed var(--line);border-radius:20px;padding:26px 16px;text-align:center;cursor:pointer;transition:.2s;background:var(--bg);display:block}
+.drop:hover,.drop.over{border-color:var(--brand);background:color-mix(in srgb,var(--brand) 6%,var(--bg))}
+.drop input{display:none}
+.stack{width:64px;margin:0 auto 12px;display:flex;flex-direction:column;gap:4px}
+.stack i{height:10px;border-radius:4px;background:var(--line)}
+.stack i:first-child{background:var(--brand);animation:bob 1.6s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-6px)}}
+.drop b{display:block;font-size:16px}
+.drop span{font-size:13px;color:var(--muted)}
+.fcard{display:flex;min-height:96px;align-items:center;gap:12px;border:1.5px solid var(--ok);background:color-mix(in srgb,var(--ok) 8%,var(--paper));border-radius:16px;padding:12px 14px}
+.ft{width:46px;height:46px;border-radius:11px;display:grid;place-items:center;font-family:var(--mono);font-weight:700;font-size:11px;color:#fff;flex:none}
+.ft.pdf{background:#e2453c}.ft.doc,.ft.docx{background:#2b6be4}
+.fm{flex:1;min-width:0}.fm b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.fm span{font-size:12px;color:var(--muted)}
+.decl{display:flex;gap:10px;align-items:flex-start;margin-top:16px;padding:14px;border-radius:14px;background:var(--bg);font-size:13.5px;line-height:1.5;cursor:pointer;border:1.5px solid transparent}
+.decl.bad{border-color:var(--err)}
+.decl input{width:18px;height:18px;margin-top:2px;accent-color:var(--brand);flex:none}
+.summary{margin-top:16px;border:1px solid var(--line);border-radius:14px;overflow:hidden;font-size:13.5px}
+.summary div{display:grid;grid-template-columns:120px 1fr;padding:9px 14px;border-bottom:1px solid var(--line)}
+.summary div:last-child{border:0}
+.summary dt{color:var(--muted)}.summary dd{margin:0;font-weight:600}
+
+.nav{display:flex;gap:10px;justify-content:space-between;padding:16px 26px 24px;border-top:1px solid var(--line)}
+.alert{display:none;margin:0 26px 0;padding:12px 14px;border-radius:12px;background:color-mix(in srgb,var(--err) 10%,var(--paper));border:1px solid color-mix(in srgb,var(--err) 35%,transparent);color:var(--err);font-size:14px;line-height:1.45}
+.alert.show{display:block;margin-top:18px}
+.spin{width:17px;height:17px;border:2.5px solid #ffffff55;border-top-color:#fff;border-radius:50%;animation:sp .8s linear infinite;display:none}
+.busy .spin{display:block}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+.aside{border-left:1px solid var(--line);padding:24px;background:var(--bg)}
+.aside h4{font-family:var(--head);margin:0 0 12px;font-size:15px}
+.chk{list-style:none;margin:0;padding:0}
+.chk li{display:flex;gap:10px;align-items:center;font-size:13.5px;padding:8px 0;color:var(--muted);border-bottom:1px dashed var(--line)}
+.chk li i{width:20px;height:20px;border-radius:7px;border:2px solid var(--line);display:grid;place-items:center;font-style:normal;font-size:11px;flex:none;transition:.2s;background:var(--paper)}
+.chk li.ok{color:var(--ink);font-weight:600}
+.chk li.ok i{background:var(--lime);border-color:#a6d63f;color:#11160a}
+.chk li.ok i::after{content:"✓"}
+.meter{height:8px;border-radius:8px;background:var(--line);margin:16px 0 6px;overflow:hidden}
+.meter div{height:100%;background:linear-gradient(90deg,var(--brand),var(--coral));width:0;transition:width .4s}
+.mtxt{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.rules{margin-top:18px;font-size:12.5px;line-height:1.55;color:var(--ink2);background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.rules b{color:var(--ink)}
+.saved{font-size:11.5px;color:var(--muted);margin-top:10px;font-family:var(--mono)}
+
+/* ---------- track ---------- */
+.trk{display:grid;grid-template-columns:1fr 1.2fr;gap:24px;align-items:start;margin-top:26px}
+@media(max-width:920px){.trk{grid-template-columns:1fr}}
+.trk h2{font-family:var(--head);font-size:28px;margin:0 0 8px;letter-spacing:-.5px}
+.trk p{color:var(--ink2);line-height:1.6;margin:0}
+.tcard{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:var(--shadow)}
+.steps{display:flex;margin:20px 0 6px;position:relative}
+.steps::before{content:"";position:absolute;left:14%;right:14%;top:14px;height:3px;background:var(--line)}
+.st{flex:1;text-align:center;font-size:12px;font-weight:600;color:var(--muted);position:relative}
+.st i{width:30px;height:30px;border-radius:50%;border:3px solid var(--line);background:var(--paper);display:block;margin:0 auto 6px}
+.st.done i{background:var(--ok);border-color:var(--ok)}
+.st.cur i{border-color:var(--brand);box-shadow:0 0 0 5px color-mix(in srgb,var(--brand) 18%,transparent)}
+.st.warn i{background:var(--coral);border-color:var(--coral)}
+.st.done,.st.cur,.st.warn{color:var(--ink)}
+.rmk{margin-top:14px;padding:12px 14px;border-left:4px solid var(--brand);background:var(--bg);border-radius:8px;font-size:14px}
+.mono{font-family:var(--mono)}
+
+/* ---------- receipt ---------- */
+.ov{position:fixed;inset:0;background:#0d0f1aa6;backdrop-filter:blur(4px);z-index:50;display:none;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
+.ov.show{display:flex}
+.ticket{width:100%;max-width:560px;background:var(--paper);border-radius:24px;overflow:hidden;animation:pop .45s cubic-bezier(.2,1.4,.4,1)}
+@keyframes pop{from{transform:scale(.85);opacity:0}}
+.tk-top{background:var(--ink);color:var(--bg);padding:22px 24px;display:flex;align-items:center;gap:14px}
+.tk-top .ck{width:48px;height:48px;border-radius:14px;background:var(--lime);color:#11160a;display:grid;place-items:center;font-size:24px;font-weight:800;flex:none}
+.tk-top h3{margin:0;font-family:var(--head);font-size:20px}
+.tk-top p{margin:2px 0 0;opacity:.7;font-size:13px}
+.perf{height:22px;position:relative;background:var(--paper)}
+.perf::before{content:"";position:absolute;left:18px;right:18px;top:50%;border-top:2px dashed var(--line)}
+.perf::after{content:"";position:absolute;left:-11px;right:-11px;top:0;height:22px;background:radial-gradient(circle at 0 50%,#0d0f1aa6 11px,transparent 12px),radial-gradient(circle at 100% 50%,#0d0f1aa6 11px,transparent 12px)}
+.tk-b{padding:6px 24px 18px;display:grid;grid-template-columns:1fr 128px;gap:16px}
+@media(max-width:520px){.tk-b{grid-template-columns:1fr}}
+.tk-id{font-family:var(--mono);font-size:28px;font-weight:700;color:var(--brand);letter-spacing:1px}
+[data-theme=dark] .tk-id{color:#a99cff}
+.q{display:inline-flex;align-items:center;gap:8px;margin:8px 0 4px;background:var(--lime);color:#11160a;font-weight:700;font-size:13px;padding:6px 11px;border-radius:999px}
+.late{display:inline-block;margin:6px 0 0 6px;background:#ffe7df;color:#a3361d;font-weight:700;font-size:12px;padding:5px 10px;border-radius:999px}
+.kv{display:grid;grid-template-columns:86px 1fr;gap:5px 10px;font-size:13px;margin-top:12px}
+.kv dt{color:var(--muted)}.kv dd{margin:0;font-weight:600;word-break:break-word}
+.qr{font-size:10.5px;color:var(--muted);text-align:center}
+.qr svg{width:128px;height:128px;background:#fff;padding:6px;border-radius:10px}
+.tk-a{display:flex;gap:8px;padding:0 24px 22px;flex-wrap:wrap}
+.tk-a .btn{padding:11px 14px;font-size:14px}
+
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,90px);opacity:0;background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:12px;font-weight:600;font-size:14px;transition:.3s;z-index:60}
+.toast.show{transform:translate(-50%,0);opacity:1}
+footer{border-top:1px solid var(--line);margin-top:30px}
+.ft-in{max-width:1180px;margin:0 auto;padding:22px 18px 34px;display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.ft-in a{font-weight:700;color:var(--ink2);text-decoration:none}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+
+@media print{
+  body *{visibility:hidden}
+  .ticket,.ticket *{visibility:visible}
+  .ticket{position:absolute;left:0;top:0;box-shadow:none;border:1px solid #ccc}
+  .tk-a{display:none}
+}
+</style>
+</head>
+<body>
+<div class="preview" id="previewBar" hidden>PREVIEW MODE · submissions are not saved yet. Add the API URL in assets/config.js to go live.</div>
+
+<header class="top">
+  <div class="top-in">
+    <div class="logo-box"><img id="logo" alt="Ajeenkya D Y Patil University"><span class="logo-mono" id="logoTxt" hidden>ADYPU</span></div>
+    <div class="sep"></div>
+    <div class="tt"><b>School of Engineering</b><span>TE Research Paper Submission</span></div>
+    <div class="grow"></div>
+    <a class="ib hide-sm" href="#track">🔎 Track status</a>
+    <button class="ib" id="theme" title="Toggle dark mode" aria-label="Toggle dark mode">🌙</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div>
+    <span class="eyebrow"><i></i><span id="eyebrow">AY 2026-27 · Third Year (TE) B.Tech · Submissions open</span></span>
+    <h1>From idea to <span class="hl">research paper</span><br>submit yours today. <code>cite(you)</code></h1>
+    <p class="lead" id="lead">One submission per paper. Add your class and author details, paper title and objective, then upload the paper (Word/PDF) with its plagiarism report. You get a Submission ID with a QR code to track your review.</p>
+    <div class="count" id="countdown" hidden>
+      <div class="cbox"><b id="cd-d">00</b><span>days</span></div>
+      <div class="cbox"><b id="cd-h">00</b><span>hrs</span></div>
+      <div class="cbox"><b id="cd-m">00</b><span>min</span></div>
+      <div class="cbox"><b id="cd-s">00</b><span>sec</span></div>
+      <div class="cnote" id="cd-note">until the deadline</div>
+    </div>
+    <div class="cta">
+      <a class="btn pri" href="#submit">Start submission →</a>
+      <a class="btn sec" href="#track">Track my paper</a>
+    </div>
+  </div>
+  <aside class="race">
+    <div class="race-h"><h3>🏁 Division race</h3><span id="raceUpd">live</span></div>
+    <div class="race-k">
+      <div><b id="kTotal">0</b><small>papers submitted</small></div>
+      <div><b id="kStud">0</b><small>student authors</small></div>
+    </div>
+    <div class="bars" id="bars"></div>
+    <div class="race-f" id="raceLead">Which division submits first? Leader shown in coral.</div>
+  </aside>
+</section>
+
+<main class="wrap">
+  <section id="submit" class="panel">
+    <div class="track" id="trackBar"></div>
+    <form id="form" novalidate autocomplete="off">
+      <input class="hp" name="website" id="website" tabindex="-1" aria-hidden="true">
+      <div class="body">
+        <div>
+          <div class="alert" id="alert"></div>
+
+          <!-- STEP 1 -->
+          <div class="pane on" data-step="0">
+            <h2>Class details</h2>
+            <p class="ph">Selected once for all authors.</p>
+            <div class="f" id="f-program"><label>Program <span class="r">*</span></label>
+              <select id="program" class="big-sel"><option value="">Select your program</option></select>
+              <div class="m">Please select your program.</div></div>
+            <div class="f" id="f-division"><label>Division <span class="r">*</span></label>
+              <select id="division" class="big-sel"><option value="">Select your division (A–M)</option></select>
+              <div class="m">Please select your division.</div></div>
+          </div>
+
+          <!-- STEP 2 -->
+          <div class="pane" data-step="1">
+            <h2>Paper details</h2>
+            <p class="ph">Title and objective of your research paper.</p>
+            <div class="f" id="f-title"><label>Paper title <span class="r">*</span></label>
+              <input id="title" maxlength="250" placeholder="e.g. Explainable Deep Learning for Early Detection of Plant Leaf Diseases">
+              <div class="m">Enter the paper title (at least 5 characters).</div></div>
+            <div class="f" id="f-objective"><label>Objective of the paper <span class="r">*</span></label>
+              <textarea id="objective" maxlength="1000" placeholder="What problem does the paper address, what method do you propose, and what result do you aim for?"></textarea>
+              <div class="m">Write the objective (at least 20 characters).</div>
+              <div class="cnt"><span id="absN">0</span>/1000</div></div>
+            <div class="grid2">
+              <div class="f"><label>Research area <span class="o">(optional)</span></label><select id="domain"><option value="">Select</option></select></div>
+              <div class="f" id="f-plag"><label>Plagiarism / similarity % <span class="o">(as per report)</span></label><input id="plag" type="number" min="0" max="100" step="0.1" inputmode="decimal" placeholder="e.g. 8"><div class="m">Enter a value from 0 to 100.</div><div class="cnt" id="plagWarn" style="text-align:left"></div></div>
+            </div>
+          </div>
+
+          <!-- STEP 3 -->
+          <div class="pane" data-step="2">
+            <h2>Student authors</h2>
+            <p class="ph">Student 1 (first author) is compulsory. Students 2–4 are optional.</p>
+            <div class="arr-h">authors[4] → <b id="teamSize">size = 0</b></div>
+            <div id="slots"></div>
+          </div>
+
+          <!-- STEP 4 -->
+          <div class="pane" data-step="3">
+            <h2>Upload &amp; submit</h2>
+            <p class="ph">Upload the research paper and its plagiarism report. Both are compulsory.</p>
+            <div class="upgrid" id="uploads"></div>
+            <dl class="summary" id="summary"></dl>
+            <label class="decl" id="declBox"><input type="checkbox" id="decl"><span>We confirm this paper is our original work, the plagiarism report attached is genuine and for this exact version of the paper, and all sources are properly cited.</span></label>
+          </div>
+        </div>
+
+        <aside class="aside">
+          <h4>Submission checklist</h4>
+          <ul class="chk" id="chk"></ul>
+          <div class="meter"><div id="meter"></div></div>
+          <div class="mtxt" id="mtxt">0% complete</div>
+          <div class="rules">📧 A confirmation email goes to every author who adds an email, plus updates when faculty review the paper.<br><br>📌 <b>Rules:</b> one submission per paper, made by the first author. A URN can be on only <b>one</b> paper. Upload the plagiarism report of the <b>same</b> version of the paper. Keep your Submission ID safe.</div>
+          <div class="saved" id="saved">💾 Draft auto-saves on this device</div>
+        </aside>
+      </div>
+      <div class="nav">
+        <button type="button" class="btn sec" id="back">← Back</button>
+        <button type="button" class="btn pri" id="next"><span class="spin"></span><span id="nextTxt">Next →</span></button>
+      </div>
+    </form>
+  </section>
+
+  <section class="trk" id="track">
+    <div>
+      <h2>Track your paper</h2>
+      <p>Enter your Submission ID and the URN of any author to see the review status and your faculty's remarks.</p>
+    </div>
+    <div class="tcard">
+      <div class="grid2">
+        <div class="f"><label>Submission ID</label><input id="tId" class="mono" placeholder="RP-C-001" style="text-transform:uppercase"></div>
+        <div class="f"><label>Your URN</label><input id="tUrn" placeholder="URN" style="text-transform:uppercase"></div>
+      </div>
+      <button class="btn pri" id="tBtn" style="width:100%;justify-content:center"><span class="spin"></span>Check status</button>
+      <div class="alert" id="tAlert" style="margin:12px 0 0"></div>
+      <div id="tRes"></div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="ft-in"><span>© <span id="yr"></span> Ajeenkya D Y Patil University · School of Engineering · TE Research Papers</span><a href="admin.html" rel="nofollow">🔐 Faculty login</a></div></footer>
+
+<div class="ov" id="receipt">
+  <div class="ticket">
+    <div class="tk-top"><div class="ck">✓</div><div><h3>Submission received</h3><p>Your paper is safely stored. Save this ticket.</p></div></div>
+    <div class="perf"></div>
+    <div class="tk-b">
+      <div>
+        <div style="font-size:12px;color:var(--muted)">Submission ID</div>
+        <div class="tk-id" id="rId"></div>
+        <span class="q" id="rQ"></span><span class="late" id="rLate" hidden>⏰ after deadline</span>
+        <dl class="kv" id="rKv"></dl>
+        <div id="rMail" style="margin-top:10px;font-size:12.5px;color:var(--ink2);background:var(--bg);border-radius:10px;padding:8px 10px"></div>
+      </div>
+      <div class="qr"><div id="rQr"></div>scan to save</div>
+    </div>
+    <div class="tk-a">
+      <button class="btn pri" onclick="window.print()">🖨 Print / PDF</button>
+      <button class="btn sec" id="copy">📋 Copy ID</button>
+      <button class="btn sec" id="newSub">New paper</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(() => {
+const C = window.DSL_CONFIG || {}; const API = (C.API_URL || '').trim();
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const store = { get(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }, set(k,v){ try { localStorage.setItem(k,v); } catch(e){} }, del(k){ try { localStorage.removeItem(k); } catch(e){} } };
+function toast(m){ const t = $('#toast'); t.textContent = m; t.classList.add('show'); clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 2800); }
+
+/* theme */
+const setTheme = t => { document.documentElement.dataset.theme = t; $('#theme').textContent = t === 'dark' ? '☀️' : '🌙'; store.set('rp_theme', t); };
+setTheme(store.get('rp_theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+$('#theme').onclick = () => setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+
+/* logo: local copy → official site → text */
+const logo = $('#logo'); let tried = 0;
+logo.onerror = () => { if (++tried === 1 && C.LOGO_REMOTE) logo.src = C.LOGO_REMOTE; else { logo.hidden = true; $('#logoTxt').hidden = false; } };
+logo.src = C.LOGO_LOCAL || C.LOGO_REMOTE || '';
+$('#yr').textContent = new Date().getFullYear();
+
+/* ---------------- API ---------------- */
+let CFG = {
+  ACADEMIC_YEAR:'2026-27', CLASS_NAME:'Third Year (TE) B.Tech', DEADLINE:'2026-12-15T23:59:00+05:30', MAX_PLAG_PERCENT:15, ACCEPT_LATE:true, MAX_FILE_MB:10,
+  DIVISIONS:'ABCDEFGHIJKLM'.split(''),
+  PROGRAMS:['B.Tech Computer Engineering','B.Tech Computer Science & Engineering','B.Tech CSE (Artificial Intelligence & Machine Learning)','B.Tech CSE (Data Science)','B.Tech CSE (Cyber Security)','B.Tech Artificial Intelligence & Data Science','B.Tech Information Technology','B.Tech Electronics & Telecommunication Engineering','B.Tech Robotics & Automation','B.Tech Mechanical Engineering','B.Tech Civil Engineering'],
+  DOMAINS:['Artificial Intelligence & Machine Learning','Deep Learning','Data Science & Analytics','Natural Language Processing','Computer Vision','Internet of Things','Cyber Security','Blockchain','Cloud & Edge Computing','Computer Networks','Software Engineering','Embedded Systems & Robotics','Healthcare Informatics','Other']
+};
+const demo = { rows: [], seq: {}, stats: { total: 0, students: 0, byDiv: {} } };
+'ABCDEFGHIJKLM'.split('').forEach((d, i) => demo.stats.byDiv[d] = [3,5,2,6,1,4,7,2,0,3,5,1,2][i]);
+demo.stats.total = Object.values(demo.stats.byDiv).reduce((a, b) => a + b, 0); demo.stats.students = Math.round(demo.stats.total * 2.7);
+const Demo = {
+  init: () => ({ config: CFG, stats: demo.stats }),
+  submit: ({payload: p}) => {
+    for (const r of demo.rows) for (const m of r.members) if (p.members.some(x => x.urn === m.urn)) throw new Error('URN ' + m.urn + ' is already part of submission ' + r.id + '.');
+    demo.seq[p.division] = (demo.seq[p.division] || 0) + 1;
+    const r = { emailed: '', id: 'RP-' + p.division + '-' + String(demo.seq[p.division]).padStart(3, '0'), late: CFG.DEADLINE && new Date() > new Date(CFG.DEADLINE), queue: (demo.stats.byDiv[p.division] || 0) + 1,
+      submittedOn: new Date().toLocaleString('en-IN'), program: p.program, division: p.division, title: p.title, members: p.members.map(m => ({name: m.name, urn: m.urn})), fileName: p.file.name, plagFileName: p.plagFile.name, status: 'Submitted', remarks: '' };
+    demo.rows.push(r); demo.stats.byDiv[p.division]++; demo.stats.total++; demo.stats.students += p.members.length; return r;
+  },
+  track: ({id, urn}) => { const r = demo.rows.find(x => x.id === id.toUpperCase() && x.members.some(m => m.urn === urn.toUpperCase())); if (!r) throw new Error('No submission found for this ID and URN.'); return Object.assign({}, r, {members: r.members.map(m => m.name)}); }
+};
+async function api(action, body = {}){
+  if (!API) { await new Promise(r => setTimeout(r, action === 'submit' ? 1200 : 300)); return Demo[action](body); }
+  const res = await fetch(API, { method: 'POST', body: JSON.stringify(Object.assign({ action }, body)) });
+  if (!res.ok) throw new Error('Server error (' + res.status + '). Please try again.');
+  const j = await res.json(); if (!j.ok) throw new Error(j.error || 'Request failed'); return j.data;
+}
+if (!API) $('#previewBar').hidden = false;
+
+/* ---------------- stats / race ---------------- */
+function drawRace(s){
+  $('#kTotal').textContent = s.total; $('#kStud').textContent = s.students;
+  const vals = CFG.DIVISIONS.map(d => s.byDiv[d] || 0), max = Math.max(1, ...vals), top = Math.max(...vals);
+  $('#bars').innerHTML = CFG.DIVISIONS.map((d, i) => `<div class="bar ${vals[i] && vals[i] === top ? 'top' : ''}" title="Division ${d}: ${vals[i]}"><b>${vals[i]}</b><i style="height:${vals[i] / max * 86}px"></i><em>${d}</em></div>`).join('');
+  const leaders = CFG.DIVISIONS.filter((d, i) => vals[i] === top && top > 0);
+  $('#raceLead').innerHTML = leaders.length ? `🏆 Leading: <b>Division ${leaders.join(', ')}</b> with ${top} paper${top > 1 ? 's' : ''}` : 'Be the first division on the board!';
+  $('#raceUpd').textContent = 'updated ' + new Date().toLocaleTimeString('en-IN', {hour: '2-digit', minute: '2-digit'});
+}
+async function loadInit(){
+  try {
+    const d = await api('init'); if (d.config) CFG = Object.assign(CFG, d.config); fillSelects(); drawRace(d.stats); startCountdown();
+  } catch (e) { fillSelects(); startCountdown(); $('#raceLead').textContent = 'Live stats unavailable right now.'; }
+}
+setInterval(() => api('init').then(d => drawRace(d.stats)).catch(() => {}), 60000);
+
+/* ---------------- countdown ---------------- */
+let closed = false;
+function startCountdown(){
+  $('#eyebrow').textContent = 'AY ' + CFG.ACADEMIC_YEAR + ' · ' + CFG.CLASS_NAME + ' · Submissions open';
+  document.querySelectorAll('.maxMb').forEach(e => e.textContent = CFG.MAX_FILE_MB);
+  if (!CFG.DEADLINE) return;
+  const dl = new Date(CFG.DEADLINE); $('#countdown').hidden = false;
+  $('#cd-note').textContent = 'until ' + dl.toLocaleString('en-IN', {day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Kolkata'});
+  const pad = n => String(n).padStart(2, '0');
+  const tick = () => {
+    const ms = dl - new Date();
+    if (ms <= 0) {
+      ['d','h','m','s'].forEach(k => $('#cd-' + k).textContent = '00');
+      if (CFG.ACCEPT_LATE) { $('#cd-note').textContent = 'Deadline passed: late entries are flagged'; $('#eyebrow').textContent = 'Deadline passed · late submissions flagged'; }
+      else { closed = true; $('#cd-note').textContent = 'Submissions are closed'; $('#eyebrow').textContent = 'Submissions closed'; }
+      return;
+    }
+    $('#cd-d').textContent = pad(Math.floor(ms / 864e5)); $('#cd-h').textContent = pad(Math.floor(ms % 864e5 / 36e5));
+    $('#cd-m').textContent = pad(Math.floor(ms % 36e5 / 6e4)); $('#cd-s').textContent = pad(Math.floor(ms % 6e4 / 1e3));
+  };
+  tick(); setInterval(tick, 1000);
+}
+
+/* ---------------- form build ---------------- */
+let selectsFilled = false;
+function fillSelects(){
+  if (selectsFilled) return; selectsFilled = true;
+  CFG.PROGRAMS.forEach(p => $('#program').add(new Option(p, p)));
+  CFG.DIVISIONS.forEach(d => $('#division').add(new Option('Division ' + d, d)));
+  CFG.DOMAINS.forEach(d => $('#domain').add(new Option(d, d)));
+  restoreDraft();
+}
+const STEPS = ['Class', 'Paper', 'Authors', 'Upload'];
+let step = 0;
+function drawTrack(){
+  const ok = stepValid();
+  $('#trackBar').innerHTML = '<span class="tlabel">head →</span>' + STEPS.map((s, i) =>
+    `<div class="node ${i === step ? 'on' : ''} ${ok[i] && i !== step ? 'done' : ''}" data-go="${i}"><div class="d"><small>step[${i}]</small><b>${s}</b></div><div class="p"></div></div><div class="link ${ok[i] ? 'done' : ''}"></div>`).join('') + '<span class="nul">NULL</span>';
+  $$('#trackBar [data-go]').forEach(n => n.onclick = () => go(+n.dataset.go));
+}
+function go(i){
+  if (i > step) for (let k = step; k < i; k++) if (!validateStep(k)) { go(k === step ? step : k); return; }
+  step = i; $$('.pane').forEach(p => p.classList.toggle('on', +p.dataset.step === step));
+  $('#back').style.visibility = step ? 'visible' : 'hidden';
+  $('#nextTxt').textContent = step === 3 ? (closed ? 'Submissions closed' : 'Submit paper ✓') : 'Next →';
+  $('#next').disabled = step === 3 && closed;
+  if (step === 3) drawSummary();
+  $('#alert').classList.remove('show'); drawTrack();
+  if (window.scrollY > $('#submit').offsetTop) $('#submit').scrollIntoView({behavior: 'smooth'});
+}
+$('#back').onclick = () => go(Math.max(0, step - 1));
+$('#next').onclick = () => step < 3 ? go(step + 1) : submit();
+
+/* team slots */
+const slotsEl = $('#slots');
+for (let i = 0; i < 4; i++) {
+  slotsEl.insertAdjacentHTML('beforeend', `<div class="slot ${i ? '' : 'leader open'}" data-i="${i}">
+    <div class="slot-h"><span class="idx">authors[${i}]</span><span class="nm null">${i ? '= null' : 'First author'}</span><span class="tag">${i ? '+ add (optional)' : 'required'}</span></div>
+    <div class="slot-b"><div class="g3">
+      <div class="f"><label>Full name ${i ? '' : '<span class="r">*</span>'}</label><input data-k="name" maxlength="80" placeholder="First Middle Last"><div class="m">Enter full name.</div></div>
+      <div class="f"><label>URN no. ${i ? '' : '<span class="r">*</span>'}</label><input data-k="urn" maxlength="25" placeholder="URN" class="mono" style="text-transform:uppercase"><div class="m">Enter a valid URN.</div></div>
+      <div class="f"><label>Contact no. ${i ? '<span class="o">(optional)</span>' : '<span class="r">*</span>'}</label><input data-k="contact" maxlength="10" inputmode="numeric" placeholder="10-digit mobile"><div class="m">10-digit mobile number.</div></div>
+      <div class="f"><label>Email ${i ? '<span class="o">(optional)</span>' : '<span class="r">*</span> <span class="o">confirmation is sent here</span>'}</label><input data-k="email" type="email" maxlength="120" placeholder="name@example.com" autocomplete="off"><div class="m">Enter a valid email address.</div></div>
+    </div>${i ? '<button type="button" class="clr" data-clear="' + i + '">✕ Remove this author</button>' : ''}</div></div>`);
+}
+const slots = $$('.slot');
+slots.forEach((s, i) => s.querySelector('.slot-h').onclick = () => { s.classList.toggle('open'); if (s.classList.contains('open')) s.querySelector('input').focus(); });
+slotsEl.addEventListener('click', e => {
+  const i = e.target.dataset.clear; if (i == null) return;
+  const s = slots[+i]; s.querySelectorAll('input').forEach(x => x.value = ''); s.querySelectorAll('.f').forEach(f => f.classList.remove('bad')); s.classList.remove('open'); update();
+});
+slotsEl.addEventListener('input', e => {
+  const k = e.target.dataset.k;
+  if (k === 'contact') e.target.value = e.target.value.replace(/\D/g, '').slice(0, 10);
+  if (k === 'urn') e.target.value = e.target.value.replace(/[^A-Za-z0-9\/\-]/g, '');
+  e.target.closest('.f').classList.remove('bad'); update();
+});
+const members = () => slots.map(s => ({ name: s.querySelector('[data-k=name]').value.trim(), urn: s.querySelector('[data-k=urn]').value.trim().toUpperCase(), contact: s.querySelector('[data-k=contact]').value.trim(), email: s.querySelector('[data-k=email]').value.trim().toLowerCase() }));
+function drawSlots(){
+  const ms = members(); let n = 0;
+  ms.forEach((m, i) => {
+    const s = slots[i], filled = !!(m.name || m.urn); if (filled) n++;
+    s.classList.toggle('filled', filled);
+    const nm = s.querySelector('.nm'); nm.classList.toggle('null', !filled);
+    nm.textContent = filled ? (m.name || '(name missing)') + (m.urn ? '  ·  ' + m.urn : '') : (i ? '= null' : 'First author');
+    if (i) s.querySelector('.tag').textContent = filled ? 'added' : '+ add (optional)';
+  });
+  $('#teamSize').textContent = 'size = ' + n;
+}
+
+/* files: research paper + plagiarism report */
+const FILES = { paper: null, plag: null };
+const UP = {
+  paper: { label: '📄 Research paper', exts: ['pdf','doc','docx'], accept: '.pdf,.doc,.docx', hint: 'PDF · DOC · DOCX' },
+  plag:  { label: '🔍 Plagiarism report', exts: ['pdf','doc','docx','png','jpg','jpeg'], accept: '.pdf,.doc,.docx,.png,.jpg,.jpeg', hint: 'PDF · Word · image' }
+};
+$('#uploads').innerHTML = Object.entries(UP).map(([k, u]) => `<div class="f" id="f-${k}" style="margin:0"><div class="uplabel">${u.label} <span style="color:var(--coral)">*</span></div>
+  <label class="drop" id="drop-${k}"><input type="file" id="file-${k}" accept="${u.accept}"><div class="stack"><i></i><i></i><i></i></div><b>Drop here or tap to browse</b><span>${u.hint} · up to <span class="maxMb">10</span> MB</span></label>
+  <div class="fcard" id="fcard-${k}" hidden><div class="ft" id="ftype-${k}">PDF</div><div class="fm"><b id="fname-${k}"></b><span id="fsize-${k}"></span></div><button type="button" class="ib" data-change="${k}">Change</button></div>
+  <div class="m" id="msg-${k}">Please attach the file.</div></div>`).join('');
+function setFile(k, f){
+  $('#f-' + k).classList.remove('bad'); if (!f) return;
+  const ext = (f.name.split('.').pop() || '').toLowerCase();
+  if (!UP[k].exts.includes(ext)) return fileErr(k, 'Allowed: ' + UP[k].hint + '.');
+  if (f.size > CFG.MAX_FILE_MB * 1048576) return fileErr(k, 'File is ' + (f.size / 1048576).toFixed(1) + ' MB. Maximum is ' + CFG.MAX_FILE_MB + ' MB.');
+  if (f.size < 100) return fileErr(k, 'This file looks empty.');
+  FILES[k] = f; const ft = $('#ftype-' + k); ft.className = 'ft ' + (['png','jpg','jpeg'].includes(ext) ? 'doc' : ext); ft.textContent = ext.toUpperCase();
+  $('#fname-' + k).textContent = f.name;
+  $('#fsize-' + k).textContent = (f.size > 1048576 ? (f.size / 1048576).toFixed(2) + ' MB' : Math.ceil(f.size / 1024) + ' KB') + ' · ready';
+  $('#drop-' + k).hidden = true; $('#fcard-' + k).hidden = false; update(); drawSummary();
+}
+function fileErr(k, m){ $('#msg-' + k).textContent = m; $('#f-' + k).classList.add('bad'); }
+Object.keys(UP).forEach(k => {
+  $('#file-' + k).onchange = e => setFile(k, e.target.files[0]);
+  const d = $('#drop-' + k);
+  ['dragenter','dragover'].forEach(v => d.addEventListener(v, e => { e.preventDefault(); d.classList.add('over'); }));
+  ['dragleave','drop'].forEach(v => d.addEventListener(v, e => { e.preventDefault(); d.classList.remove('over'); }));
+  d.addEventListener('drop', e => setFile(k, e.dataTransfer.files[0]));
+});
+document.addEventListener('click', e => { const k = e.target.dataset && e.target.dataset.change; if (!k) return; FILES[k] = null; $('#file-' + k).value = ''; $('#fcard-' + k).hidden = true; $('#drop-' + k).hidden = false; update(); });
+function clearFiles(){ Object.keys(UP).forEach(k => { FILES[k] = null; $('#file-' + k).value = ''; $('#fcard-' + k).hidden = true; $('#drop-' + k).hidden = false; }); }
+
+/* ---------------- validation ---------------- */
+const RX_PHONE = /^[6-9]\d{9}$/, RX_URN = /^[A-Za-z0-9\/\-]{4,25}$/, RX_MAIL = /^[^\s@<>()",;:]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+function stepValid(){
+  const m0 = members()[0];
+  const extrasOk = members().slice(1).every(m => !(m.name || m.urn || m.contact || m.email) || (m.name.length >= 2 && RX_URN.test(m.urn) && (!m.contact || RX_PHONE.test(m.contact)) && (!m.email || RX_MAIL.test(m.email))));
+  return [
+    !!$('#program').value && !!$('#division').value,
+    $('#title').value.trim().length >= 5 && $('#objective').value.trim().length >= 20 && plagOk(),
+    m0.name.length >= 2 && RX_URN.test(m0.urn) && RX_PHONE.test(m0.contact) && RX_MAIL.test(m0.email) && extrasOk,
+    !!FILES.paper && !!FILES.plag && $('#decl').checked
+  ];
+}
+function bad(el, msg){ const f = el.closest('.f'); f.classList.add('bad'); if (msg) f.querySelector('.m').textContent = msg; return false; }
+function validateStep(k){
+  let ok = true;
+  if (k === 0) { if (!$('#program').value) ok = bad($('#program')); if (!$('#division').value) ok = bad($('#division')); }
+  if (k === 1) { if ($('#title').value.trim().length < 5) ok = bad($('#title')); if ($('#objective').value.trim().length < 20) ok = bad($('#objective')); if (!plagOk()) ok = bad($('#plag')); }
+  if (k === 2) {
+    const seen = {};
+    members().forEach((m, i) => {
+      const s = slots[i]; if (i && !(m.name || m.urn || m.contact || m.email)) return;
+      const q = x => s.querySelector('[data-k=' + x + ']');
+      let sOk = true;
+      if (m.name.length < 2) sOk = bad(q('name'), i ? 'Name is required if this student is added.' : 'Enter full name.');
+      if (!RX_URN.test(m.urn)) sOk = bad(q('urn'), 'Enter a valid URN.');
+      else if (seen[m.urn]) sOk = bad(q('urn'), 'Same URN entered twice.');
+      seen[m.urn] = 1;
+      if ((!i || m.contact) && !RX_PHONE.test(m.contact)) sOk = bad(q('contact'), '10-digit mobile number.');
+      if ((!i || m.email) && !RX_MAIL.test(m.email)) sOk = bad(q('email'), i ? 'Enter a valid email address.' : 'Leader email is required: the confirmation is sent here.');
+      if (!sOk) { ok = false; s.classList.add('open'); }
+    });
+  }
+  if (k === 3) {
+    if (!FILES.paper) { fileErr('paper', 'Please attach the research paper.'); ok = false; }
+    if (!FILES.plag) { fileErr('plag', 'Please attach the plagiarism report.'); ok = false; }
+    if (!$('#decl').checked) { $('#declBox').classList.add('bad'); ok = false; }
+  }
+  if (!ok) { const b = $('.pane.on .bad, .pane.on .decl.bad'); b && b.scrollIntoView({behavior: 'smooth', block: 'center'}); }
+  return ok;
+}
+const plagOk = () => { const v = $('#plag').value.trim(); return v === '' || (Number(v) >= 0 && Number(v) <= 100); };
+['program','division','title','domain','objective','plag'].forEach(id => $('#' + id).addEventListener('input', e => { e.target.closest('.f') && e.target.closest('.f').classList.remove('bad'); update(); }));
+$('#decl').onchange = () => { $('#declBox').classList.remove('bad'); update(); };
+
+/* ---------------- checklist + draft ---------------- */
+function update(){
+  $('#absN').textContent = $('#objective').value.length;
+  const pv = Number($('#plag').value); $('#plagWarn').innerHTML = $('#plag').value !== '' && pv > (CFG.MAX_PLAG_PERCENT || 15) ? '<span style="color:var(--coral);font-weight:700">⚠ Above ' + (CFG.MAX_PLAG_PERCENT || 15) + '%: please revise the paper before submitting.</span>' : '';
+  drawSlots();
+  const m0 = members()[0];
+  const items = [['Program & division', !!$('#program').value && !!$('#division').value], ['Paper title & objective', $('#title').value.trim().length >= 5 && $('#objective').value.trim().length >= 20], ['First author details + email', m0.name.length >= 2 && RX_URN.test(m0.urn) && RX_PHONE.test(m0.contact) && RX_MAIL.test(m0.email)], ['Research paper uploaded', !!FILES.paper], ['Plagiarism report uploaded', !!FILES.plag], ['Declaration accepted', $('#decl').checked]];
+  const n = items.filter(x => x[1]).length, pct = Math.round(n / items.length * 100);
+  $('#chk').innerHTML = items.map(([t, v]) => `<li class="${v ? 'ok' : ''}"><i></i>${t}</li>`).join('');
+  $('#meter').style.width = pct + '%'; $('#mtxt').textContent = pct + '% complete' + (pct === 100 ? ' · ready to push!' : '');
+  drawTrack(); saveDraft();
+}
+let draftT;
+function saveDraft(){
+  clearTimeout(draftT);
+  draftT = setTimeout(() => {
+    store.set('rp_draft', JSON.stringify({ program: $('#program').value, division: $('#division').value, title: $('#title').value, domain: $('#domain').value, objective: $('#objective').value, plag: $('#plag').value, members: members() }));
+    $('#saved').textContent = '💾 Draft saved on this device · ' + new Date().toLocaleTimeString('en-IN', {hour: '2-digit', minute: '2-digit'});
+  }, 500);
+}
+function restoreDraft(){
+  try {
+    const d = JSON.parse(store.get('rp_draft') || 'null'); if (!d) return update();
+    ['program','division','title','domain','objective','plag'].forEach(k => { if (d[k]) $('#' + k).value = d[k]; });
+    (d.members || []).forEach((m, i) => { if (!slots[i]) return; ['name','urn','contact','email'].forEach(k => slots[i].querySelector('[data-k=' + k + ']').value = m[k] || ''); if (i && (m.name || m.urn)) slots[i].classList.add('open'); });
+    if (d.title || (d.members && d.members[0] && d.members[0].name)) toast('↺ Your saved draft was restored');
+  } catch (e) {}
+  update();
+}
+function drawSummary(){
+  const ms = members().filter(m => m.name);
+  const rows = [['Program', $('#program').value], ['Division', $('#division').value], ['Title', $('#title').value.trim()], ['Plagiarism', $('#plag').value ? $('#plag').value + '%' : '-'], ['Authors', ms.map(m => m.name + ' (' + m.urn + ')').join(', ')], ['Paper', FILES.paper ? FILES.paper.name : '-'], ['Plag report', FILES.plag ? FILES.plag.name : '-']];
+  $('#summary').innerHTML = rows.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v || '-')}</dd></div>`).join('');
+}
+
+/* ---------------- submit ---------------- */
+const b64 = f => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(',')[1]); r.onerror = () => rej(new Error('Could not read the file.')); r.readAsDataURL(f); });
+async function submit(){
+  if (closed) return;
+  for (let k = 0; k < 4; k++) if (!validateStep(k)) { go(k); return; }
+  const btn = $('#next'); btn.disabled = true; btn.classList.add('busy'); $('#nextTxt').textContent = 'Uploading… keep this page open';
+  try {
+    const ms = members().filter((m, i) => i === 0 || m.name || m.urn || m.contact || m.email);
+    const r = await api('submit', { payload: { website: $('#website').value, program: $('#program').value, division: $('#division').value, title: $('#title').value.trim(), domain: $('#domain').value, objective: $('#objective').value.trim(), plag: $('#plag').value.trim(), members: ms, file: { name: FILES.paper.name, type: FILES.paper.type, data: await b64(FILES.paper) }, plagFile: { name: FILES.plag.name, type: FILES.plag.type, data: await b64(FILES.plag) } } });
+    store.del('rp_draft'); showReceipt(r); api('init').then(d => drawRace(d.stats)).catch(() => {});
+  } catch (e) {
+    $('#alert').textContent = '⚠ ' + (e.message || 'Submission failed. Check your internet connection and try again.'); $('#alert').classList.add('show');
+  } finally { btn.disabled = closed; btn.classList.remove('busy'); $('#nextTxt').textContent = 'Submit paper ✓'; }
+}
+function showReceipt(r){
+  $('#rId').textContent = r.id; $('#rLate').hidden = !r.late;
+  $('#rQ').textContent = '🧾 #' + r.queue + ' in Division ' + r.division + ' review queue';
+  $('#rMail').innerHTML = r.emailed ? '📧 Confirmation email sent to <b>' + esc(r.emailed) + '</b>' : (API ? '📧 Confirmation email could not be sent right now. Please screenshot this ticket.' : '📧 (Preview) A confirmation email would be sent to the authors.');
+  $('#rKv').innerHTML = [['Submitted', r.submittedOn], ['Program', r.program], ['Title', r.title], ['Authors', r.members.map(m => m.name).join(', ')], ['Paper', r.fileName], ['Plag report', r.plagFileName]].map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join('');
+  try { const q = qrcode(0, 'M'); q.addData(r.id + ' | ' + r.title + ' | ADYPU TE Research Paper'); q.make(); $('#rQr').innerHTML = q.createSvgTag({cellSize: 4, margin: 0, scalable: true}); } catch (e) { $('#rQr').parentNode.style.display = 'none'; }
+  $('#receipt').classList.add('show'); confetti();
+}
+$('#copy').onclick = () => { const t = $('#rId').textContent; (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => toast('📋 Copied ' + t), () => prompt('Your Submission ID:', t)); };
+$('#newSub').onclick = () => {
+  $('#receipt').classList.remove('show'); $('#form').reset(); clearFiles(); slots.forEach((s, i) => s.classList.toggle('open', !i)); update(); go(0);
+};
+function confetti(){
+  const c = document.createElement('canvas'); c.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:70'; c.width = innerWidth; c.height = innerHeight; document.body.appendChild(c);
+  const x = c.getContext('2d'), col = ['#3d2fd6','#c8f560','#ff6a4d','#0fa36b','#ffffff'];
+  const ps = Array.from({length: 140}, () => ({x: innerWidth / 2, y: innerHeight / 2.5, vx: (Math.random() - .5) * 16, vy: Math.random() * -13 - 3, s: Math.random() * 7 + 4, c: col[Math.random() * 5 | 0], r: Math.random() * 6}));
+  let t = 0; (function f(){ x.clearRect(0, 0, c.width, c.height); ps.forEach(p => { p.vy += .35; p.x += p.vx; p.y += p.vy; p.r += .12; x.save(); x.translate(p.x, p.y); x.rotate(p.r); x.fillStyle = p.c; x.fillRect(-p.s / 2, -p.s / 4, p.s, p.s / 2); x.restore(); }); if (++t < 150) requestAnimationFrame(f); else c.remove(); })();
+}
+
+/* ---------------- track ---------------- */
+$('#tBtn').onclick = async () => {
+  const id = $('#tId').value.trim(), urn = $('#tUrn').value.trim(); $('#tAlert').classList.remove('show'); $('#tRes').innerHTML = '';
+  if (!id || !urn) { $('#tAlert').textContent = 'Enter both Submission ID and URN.'; return $('#tAlert').classList.add('show'); }
+  const b = $('#tBtn'); b.classList.add('busy'); b.disabled = true;
+  try {
+    const r = await api('track', {id, urn});
+    const flow = ['Submitted', 'Under Review', r.status === 'Needs Revision' ? 'Needs Revision' : 'Approved'], idx = flow.indexOf(r.status);
+    $('#tRes').innerHTML = `<div style="margin-top:20px"><div class="mono" style="font-weight:700;color:var(--brand);font-size:18px">${esc(r.id)}</div>
+      <div style="font-weight:700;margin-top:4px">${esc(r.title)}</div><div style="color:var(--muted);font-size:13px">Division ${esc(r.division)} · ${esc((r.members || []).join(', '))}</div>
+      <div class="steps">${flow.map((s, i) => `<div class="st ${i < idx || (i === idx && s === 'Approved') ? 'done' : i === idx ? (s === 'Needs Revision' ? 'warn' : 'cur') : ''}"><i></i>${s}</div>`).join('')}</div>
+      ${r.remarks ? `<div class="rmk"><b>Faculty remarks:</b> ${esc(r.remarks)}</div>` : ''}
+      <div style="color:var(--muted);font-size:12px;margin-top:10px">Submitted ${esc(r.submittedOn)}${r.reviewedOn ? ' · reviewed ' + esc(r.reviewedOn) : ''}${r.late ? ' · ⏰ late' : ''}</div></div>`;
+  } catch (e) { $('#tAlert').textContent = e.message; $('#tAlert').classList.add('show'); }
+  finally { b.classList.remove('busy'); b.disabled = false; }
+};
+
+go(0); loadInit();
+})();
+</script>
+</body>
+</html>
