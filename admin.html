@@ -7,11 +7,11 @@
 <meta name="referrer" content="no-referrer">
 <title>Faculty Console · TE Research Papers · ADYPU</title>
 <link rel="icon" href="https://adypu.edu.in/wp-content/uploads/2023/03/cropped-favicon-1-270x270.png">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
-<script src="assets/config.js?v=rp3"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<script src="assets/config.js?v=rp4"></script>
 <style>
-:root{--bg:#f7f2e8;--paper:#fffdf8;--ink:#1f1a14;--ink2:#4a4237;--muted:#857a6a;--line:#e2d8c6;--line2:#cfc2ab;--brand:#7b1e2b;--brand2:#9c2a3a;--teal:#0f6b67;--gold:#c4952c;--coral:#b3261e;--ok:#2f7d4f;--warn:#a86b00;--err:#b3261e;--mono:'IBM Plex Mono',ui-monospace,monospace;--head:'Fraunces',Georgia,serif;--sans:'IBM Plex Sans',system-ui,sans-serif;--shadow:0 1px 0 var(--line)}
-[data-theme=dark]{--bg:#16130f;--paper:#1f1b16;--ink:#f3ece0;--ink2:#d4c9b6;--muted:#9b8f7d;--line:#352e25;--line2:#4a4136;--brand:#d9606f;--brand2:#e57b88;--teal:#4fb5ae;--gold:#e0b85a}
+:root{--bg:#f4f4f0;--paper:#fff;--ink:#0d0f1a;--ink2:#3b4058;--muted:#6b7089;--line:#e6e4dc;--line2:#d8d5ca;--brand:#3d2fd6;--brand2:#5b4dff;--teal:#3d2fd6;--gold:#c8f560;--coral:#ff6a4d;--ok:#0fa36b;--warn:#c97a00;--err:#dc3545;--mono:'JetBrains Mono',ui-monospace,monospace;--head:'Space Grotesk',system-ui,sans-serif;--sans:'Inter',system-ui,sans-serif;--shadow:0 1px 0 var(--line)}
+[data-theme=dark]{--bg:#0b0d16;--paper:#141726;--ink:#eef0fa;--ink2:#c3c7dc;--muted:#8a90ad;--line:#262a40;--line2:#343957;--brand:#7d70ff;--brand2:#9a90ff;--teal:#7d70ff}
 *{box-sizing:border-box}[hidden]{display:none!important}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
 button,input,select,textarea{font:inherit;color:inherit}
@@ -34,7 +34,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .lhead{text-align:center;border-bottom:3px double var(--line2);padding-bottom:16px;margin-bottom:18px}
 .logo-box{background:#fff;border:1px solid var(--line);border-radius:4px;padding:5px 9px;display:inline-flex;align-items:center;min-height:44px}
 .logo-box img{height:34px;display:block}
-.logo-mono{font-family:var(--head);font-weight:800;color:#7b1e2b;font-size:17px}
+.logo-mono{font-family:var(--head);font-weight:700;color:#3d2fd6;font-size:17px}
 .lock{display:none}
 .lbox h1{font-family:var(--head);margin:12px 0 2px;font-size:30px;font-weight:600;letter-spacing:-.4px;text-align:center}
 .lbox p{color:var(--muted);margin:0;font-size:14px;text-align:center;font-family:var(--head);font-style:italic}
@@ -140,6 +140,35 @@ textarea.in{min-height:100px;resize:vertical;font-family:var(--head);font-size:1
 .fgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media(max-width:640px){.fgrid{grid-template-columns:1fr}}
 .act{font-family:var(--mono);font-size:11.5px;font-weight:600}
+
+/* ---- synced with DSL26 look ---- */
+.preview{color:#1d2600}
+.btn,.in,.tools select,.who .row button,.reveal,.so,.divpick label,.dr-h .x{border-radius:11px}
+.l-form{border-radius:24px}.l-form::before{border-radius:16px}
+.logo-box{border-radius:12px}
+.card,.kpis,.tbl{border-radius:18px;overflow:hidden}
+.kpi b{font-weight:700}
+.kpi .mb{border-radius:5px;overflow:hidden}.kpi .mb i{background:linear-gradient(90deg,var(--brand),var(--coral))}
+.dc i{border-radius:7px 7px 3px 3px;background:var(--brand)}
+.dc.sel i{background:var(--coral)}
+.dc.zero i{background:repeating-linear-gradient(45deg,#ffd8cf,#ffd8cf 4px,transparent 4px,transparent 8px)}
+.dc.zero em{color:var(--coral)}
+.hb .t i{background:var(--brand)!important}
+.nav button.on{color:var(--brand);border-bottom-color:var(--brand)}
+.role{border-radius:6px;border-color:var(--coral);color:var(--coral)}
+.role.faculty{border-color:var(--brand);color:var(--brand)}
+.pill{border-radius:999px}
+.lt{border-radius:5px}
+.av.ld{background:var(--coral);border-color:var(--coral)}
+.so.on{background:var(--ink);color:var(--paper)}
+.dr{border-radius:22px 0 0 22px}
+.toast{border-radius:12px}
+.lbox p,.card .cap,.empty,.loading{font-family:var(--sans)}
+textarea.in{font-family:var(--sans)}
+.hdr h2,.lbox h1{letter-spacing:-.8px}
+tbody tr:hover td{background:color-mix(in srgb,var(--brand) 4%,transparent)}
+.lsec span{border-radius:8px}
+.login{background-image:none}
 </style>
 </head>
 <body>
