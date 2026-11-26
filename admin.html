@@ -271,7 +271,7 @@ const Demo = (() => {
   return {
     login: ({username, password}) => { if (username !== 'demo' || password !== 'demo') throw new Error('Invalid username or password. (Preview: demo / demo)'); return { token: 'demo', user: {u: 'demo', name: 'Lab Coordinator', role: 'admin', divs: 'ALL'} }; },
     logout: () => true,
-    dashboard: () => ({ config: { DEADLINE: '2026-11-25T23:59:00+05:30', ACCEPT_LATE: true }, emailQuota: 100, user: {u: 'demo', name: 'Lab Coordinator', role: 'admin', divs: 'ALL'}, rows: JSON.parse(JSON.stringify(rows)) }),
+    dashboard: () => ({ config: { DEADLINE: '2026-11-29T23:59:00+05:30', ACCEPT_LATE: true }, emailQuota: 100, user: {u: 'demo', name: 'Lab Coordinator', role: 'admin', divs: 'ALL'}, rows: JSON.parse(JSON.stringify(rows)) }),
     review: ({id, status, remarks}) => { const r = rows.find(x => x.id === id); r.status = status; r.remarks = remarks; r.reviewedOn = new Date().toLocaleString('en-IN'); r.reviewedBy = 'Lab Coordinator'; lg('REVIEW', id + ' → ' + status); return { reviewedOn: r.reviewedOn, reviewedBy: r.reviewedBy, emailed: 'team' }; },
     reveal: ({id}) => { lg('VIEW_CONTACTS', id); return rows.find(x => x.id === id).members.map(m => Object.assign({}, m, {contact: m.contact ? '98765' + m.contact.slice(-5).replace(/X/g, '4') : '', email: m.email ? 'student' + id.slice(-3) + '@gmail.com' : ''})); },
     file: ({id, which}) => { lg(which === 'plag' ? 'DOWNLOAD_PLAG_REPORT' : 'DOWNLOAD_PAPER', id); return { name: id + (which === 'plag' ? '_plag' : '_paper') + '_sample.txt', mime: 'text/plain', data: btoa('Preview mode: real files download from your private Google Drive once the backend is connected.') }; },

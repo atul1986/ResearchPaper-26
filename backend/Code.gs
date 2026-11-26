@@ -21,7 +21,7 @@ const CONFIG = {
   LAB_NAME: 'TE Research Paper Submission',
   CLASS_NAME: 'Third Year (TE) B.Tech',
   ACADEMIC_YEAR: '2026-27',
-  DEADLINE: '2026-11-25T23:59:00+05:30',   // '' = no deadline
+  DEADLINE: '2026-11-29T23:59:00+05:30',   // '' = no deadline
   ACCEPT_LATE: true,                        // false = close submissions after the deadline
   MAX_FILE_MB: 10,
   DIVISIONS: 'ABCDE'.split(''),
@@ -590,4 +590,13 @@ function saveSettings_(s, deadline, acceptLate) {
   CacheService.getScriptCache().remove('rp_stats');
   log_(s.u, 'SETTINGS', 'deadline=' + (deadline || 'none') + ' acceptLate=' + !!acceptLate);
   return { DEADLINE: deadline, ACCEPT_LATE: !!acceptLate };
+}
+
+/** Run from the editor to change the deadline without signing in (no redeploy needed). */
+function extendDeadline() {
+  const p = PropertiesService.getScriptProperties();
+  p.setProperty('RP_DEADLINE', '2026-11-29T23:59:00+05:30');
+  p.setProperty('RP_ACCEPT_LATE', 'true');
+  CacheService.getScriptCache().remove('rp_stats');
+  Logger.log('Deadline is now 29 Nov 2026, 11:59 PM IST. Student submissions are open.');
 }
