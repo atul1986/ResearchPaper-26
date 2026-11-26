@@ -74,6 +74,7 @@ const COL = {}; HEADERS.forEach((h, i) => COL[h] = i);
 /** Run once from the Apps Script editor. Prints your admin username + a one-time random password. */
 function setup() {
   const p = PropertiesService.getScriptProperties();
+  migrateKeys_(p);
   let ss = p.getProperty('RP_SHEET_ID') ? SpreadsheetApp.openById(p.getProperty('RP_SHEET_ID')) : null;
   if (!ss) { ss = SpreadsheetApp.create('TE Research Paper Submissions – AY ' + CONFIG.ACADEMIC_YEAR); p.setProperty('RP_SHEET_ID', ss.getId()); }
   const mk = (name, headers) => {
@@ -121,8 +122,17 @@ function resetAdminPassword() {
 
 const PORTAL_ID = 'TE-RESEARCH-PAPERS';
 
+/* Older deployments saved settings without the RP_ prefix. Copy them across once so the
+   existing sheet, Drive folder, ID counters and deadline stay connected (nothing is lost). */
+function migrateKeys_(p) {
+  const keys = ['SHEET_ID', 'FOLDER_ID', 'DEADLINE', 'ACCEPT_LATE'].concat('ABCDEFGHIJKLM'.split('').map(d => 'SEQ_' + d));
+  keys.forEach(k => { const old = p.getProperty(k); if (old != null && p.getProperty('RP_' + k) == null) p.setProperty('RP_' + k, old); });
+}
+
+
 function db_() {
   const p = PropertiesService.getScriptProperties();
+  migrateKeys_(p);
   if (!p.getProperty('RP_SHEET_ID') || !p.getProperty('RP_FOLDER_ID')) setup();
   const ss = SpreadsheetApp.openById(p.getProperty('RP_SHEET_ID'));
   const sub = ss.getSheetByName(SH_SUB);
@@ -595,8 +605,10 @@ function saveSettings_(s, deadline, acceptLate) {
 /** Run from the editor to change the deadline without signing in (no redeploy needed). */
 function extendDeadline() {
   const p = PropertiesService.getScriptProperties();
-  p.setProperty('RP_DEADLINE', '2026-11-29T23:59:00+05:30');
-  p.setProperty('RP_ACCEPT_LATE', 'true');
-  CacheService.getScriptCache().remove('rp_stats');
+  migrateKeys_(p);
+  ['DEADLINE', 'RP_DEADLINE'].forEach(k => p.setProperty(k, '2026-11-29T23:59:00+05:30'));
+  ['ACCEPT_LATE', 'RP_ACCEPT_LATE'].forEach(k => p.setProperty(k, 'true'));
+  const c = CacheService.getScriptCache(); c.remove('stats'); c.remove('rp_stats');
   Logger.log('Deadline is now 29 Nov 2026, 11:59 PM IST. Student submissions are open.');
+  Logger.log('Connected sheet: ' + SpreadsheetApp.openById(p.getProperty('RP_SHEET_ID')).getUrl());
 }
